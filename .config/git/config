@@ -1,0 +1,108 @@
+; User
+[credential "https://github.com"]
+    helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+    helper = !/usr/bin/gh auth git-credential
+[user]
+    email=beaufays.alexandre@gmail.com
+    name=abeaufays
+
+
+[init]
+    defaultBranch = main
+[core]
+    excludesFile = ~/.config/git/ignore
+    editor = nvim
+[branch]
+    sort = -committerdate
+[diff]
+    algorithm = histogram
+    colorMoved = plain
+    mnemonicPrefix = true
+    renames = true
+[rebase]
+    autosquash = true
+    autostash = true
+    updateRefs = true
+[fetch]
+    prune = true
+    pruneTags = true
+[push]
+    autoSetupRemote = true
+[pull]
+    rebase = true
+[rerere]
+    enabled = true
+    autoupdate = true
+[alias]
+    ## Used for other aliases
+    # Alias for main or master depending on repo
+    get-main-branch = "!git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | cut -d'/' -f4 | grep -v '^$' || git branch -l main master 2>/dev/null | head -1 | sed 's/^[* ]*//' || echo main"
+    # Get the merge-base with main-branch, if already on main-branch get last 10 commits
+    get-reference-commit = "!sh -c 'if [ $(git branch --show-current) = $(git get-main-branch) ]; then git rev-list --max-count=11 HEAD | tail -1 ; else echo $(git merge-base @ $(git get-main-branch)); fi'"
+    # Update the main-branch on origin 
+    update-main = "!git fetch origin $(git get-main-branch):$(git get-main-branch)"
+    # List commits with only the name to display in fzf preview
+    # Check if input branch is merged, inefficient command in terms of time 
+    is-merged = "!f() { commit=${1:-HEAD}; main=$(git get-main-branch); if git merge-base --is-ancestor $commit $main 2>/dev/null; then echo 'Merged'; elif git log $main --format=%H | grep -q $(git rev-parse $commit 2>/dev/null); then echo 'Merged (rebased)'; else echo 'Not merged'; fi; }; f"
+
+
+    st = status
+    # Add Modified Files: Display modified files since last commit, select some to add to the staging area 
+    amf = "!git diff --name-only | fzf -m --preview='git diff --color {}' | xargs git add"
+    # Add Modified Files include New files (long on large repos)
+    amfn = "!git ls-files -mo --exclude-standard | fzf -m --preview='git diff --color {}' | xargs git add"
+
+    # Open Modified Files: Display commited files since diverting from main branch, select some and open them in vscode 
+    omf = "!git diff --name-only @ $(git get-reference-commit) | fzf -m --preview='git diff --color --merge-base $(git get-main-branch)' | xargs code"
+
+    co = commit
+    ame = commit --amend
+    amne = commit --amend --no-edit
+    wip = commit --message='TMP: [skip ci]' --allow-empty --no-verify
+    
+    # Fixup on with a GUI selector
+    fix = "!f() { git log `git get-reference-commit`..@ --pretty=format:'%h %s' | fzf --preview='echo {} | sed \"s/ .*$//\" | xargs git show --color ' | cut -c -7 | xargs git commit $1 --fixup ; }; f"
+
+    # Apply Fixups
+    afix = "!git rebase --autosquash `git get-reference-commit`"
+
+    pop = reset @~
+    reset-on = "!f() { git log `git get-reference-commit`^..@ --pretty=format:'%h %s' | fzf | cut -c -7 | xargs git reset $1 ; }; f"
+    delete-branches = "!f() { git branch | fzf -m | xargs git branch -D ;}; f"
+    
+    sw = switch
+    # Show branches in fzf and select one to switch on
+    swf = "!git branch | fzf --preview='branch=$(echo {} | sed \"s/^[*+ ]*//\" | xargs echo); git-log-for-fzf-preview $(git merge-base $branch $(git get-main-branch))..$branch 2>/dev/null || echo \"No commits\"' | sed 's/^[*+ ]*//' | xargs git switch"
+
+
+    pf = push --force-with-lease
+
+    # ReBase Interactive
+    rbi = rebase -i
+    # ReBase Main: Update main then rebase on it
+    rbm = "!git update-main; git rebase $(git get-main-branch)"
+    # ReBase All: Rebase interactive on all that is new to current branch
+    rba = "!git rebase -i --autosquash `git get-reference-commit`"
+    # ReBase Continue
+    rbc = rebase --continue
+    
+    # Mainly used when checking out a branch for review
+    reset-on-remote = "!git fetch origin $(git branch --show-current); git reset --hard origin/$(git branch --show-current)"
+
+    # Show all branch in fzf, delete selected ones. Use with -D to force deletion.
+    delete-branches = "!git branch | fzf -m --preview='branch=$(echo {} | sed \"s/^[*+ ]*//\" | xargs echo); git is-merged $branch; echo --- ; git-log-for-fzf-preview $(git merge-base $branch $(git get-main-branch))..$branch 2>/dev/null || echo \"No commits\"' | sed \"s/^[*+ ]*//\"  | xargs git branch -d "
+
+    # New BRanch: Update main then create new branch from it
+    nbr = "!f() { git update-main; git switch -c $1 $(git get-main-branch); }; f"
+    # Fetch BRanch: create locally a branch that already exists on remote
+    fbr = "!f(){ git fetch origin $1; git switch $1; }; f" 
+
+    spu = stash push -u
+    spo = stash pop --index
+
+    lg = log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%an %cr)%Creset' --abbrev-commit --date=relative --reverse
+    ll = "!git lg $(git get-reference-commit)..@"
+
+    enable-commit-message-template = config --local commit.template ~/.config/git/commit_message.txt
+    disable-commit-message-template = config --local --unset commit.template
