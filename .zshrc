@@ -13,6 +13,7 @@ zstyle :compinstall filename '~/.zshrc'
 autoload -Uz compinit
 compinit
 
+export EDITOR=nvim
 
 alias ls=' ls --color=auto'
 alias grep='grep --color=auto'
