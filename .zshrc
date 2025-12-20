@@ -1,7 +1,3 @@
-if [ -f ~/.config/zsh/local ]; then
-    source ~/.config/zsh/local
-fi
-
 source ~/.config/zsh/prompt
 source ~/.config/zsh/alias
 export PATH="~/.config/scripts:$PATH"
@@ -17,10 +13,7 @@ zstyle :compinstall filename '~/.zshrc'
 autoload -Uz compinit
 compinit
 
-# UV install
-. "$HOME/.local/bin/env"
-
-export LS_COLORS="$(vivid generate jellybeans)"
+# export LS_COLORS="$(vivid generate jellybeans)"
 alias ls=' ls --color=auto'
 alias grep='grep --color=auto'
 
@@ -30,3 +23,7 @@ export LC_ALL=C.UTF-8
 
 export GEM_HOME="$HOME/gems"
 export PATH="$HOME/gems/bin:$PATH"
+
+if [ -f ~/.config/zsh/local ]; then
+    source ~/.config/zsh/local
+fi
