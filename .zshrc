@@ -1,5 +1,5 @@
-source ~/projects/shared_config/zsh/prompt
-source ~/projects/shared_config/zsh/alias
+source ~/.config/zsh/prompt
+source ~/.config/zsh/alias
 export PATH="~/.config/scripts:$PATH"
 source <(fzf --zsh)
 
