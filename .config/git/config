@@ -1,12 +1,5 @@
-; User
-[credential "https://github.com"]
-    helper = !/usr/bin/gh auth git-credential
-[credential "https://gist.github.com"]
-    helper = !/usr/bin/gh auth git-credential
-[user]
-    email=beaufays.alexandre@gmail.com
-    name=abeaufays
-
+[include]
+    path = ~/.config/git/local
 
 [init]
     defaultBranch = main
