@@ -53,7 +53,7 @@
     ame = commit --amend
     amne = commit --amend --no-edit
     wip = commit --message='TMP: [skip ci]' --allow-empty --no-verify
-    
+
     # Fixup on with a GUI selector
     fix = "!f() { git log `git get-reference-commit`..@ --pretty=format:'%h %s' | fzf --preview='echo {} | sed \"s/ .*$//\" | xargs git show --color ' | cut -c -7 | xargs git commit $1 --fixup ; }; f"
 
@@ -63,7 +63,7 @@
     pop = reset @~
     reset-on = "!f() { git log `git get-reference-commit`^..@ --pretty=format:'%h %s' | fzf | cut -c -7 | xargs git reset $1 ; }; f"
     delete-branches = "!f() { git branch | fzf -m | xargs git branch -D ;}; f"
-    
+
     sw = switch
     # Show branches in fzf and select one to switch on
     swf = "!git branch | fzf --preview='branch=$(echo {} | sed \"s/^[*+ ]*//\" | xargs echo); git-log-for-fzf-preview $(git merge-base $branch $(git get-main-branch))..$branch 2>/dev/null || echo \"No commits\"' | sed 's/^[*+ ]*//' | xargs git switch"
@@ -79,7 +79,7 @@
     rba = "!git rebase -i --autosquash `git get-reference-commit`"
     # ReBase Continue
     rbc = rebase --continue
-    
+
     # Mainly used when checking out a branch for review
     reset-on-remote = "!git fetch origin $(git branch --show-current); git reset --hard origin/$(git branch --show-current)"
 
