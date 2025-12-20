@@ -1,6 +1,6 @@
 source ~/projects/shared_config/zsh/prompt
 source ~/projects/shared_config/zsh/alias
-export PATH="~/projects/shared_config/scripts/bin:$PATH"
+export PATH="~/.config/scripts:$PATH"
 source <(fzf --zsh)
 
 HISTFILE=~/.histfile
