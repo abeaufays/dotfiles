@@ -1,3 +1,7 @@
+if [ -f ~/.config/zsh/local ]; then
+    source ~/.config/zsh/local
+fi
+
 source ~/.config/zsh/prompt
 source ~/.config/zsh/alias
 export PATH="~/.config/scripts:$PATH"
