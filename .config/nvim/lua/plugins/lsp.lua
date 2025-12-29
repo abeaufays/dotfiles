@@ -8,25 +8,13 @@ return {
     },
     {
         "mason-org/mason-lspconfig.nvim",
-        dependencies = { "neovim/nvim-lspconfig" },
+        dependencies = { "neovim/nvim-lspconfig", "saghen/blink.cmp" },
         opts = {
             ensure_installed = { "lua_ls" },
             handlers = {
                 function(server_name)
-                    -- Instead of the old .setup{}, we use the new enable()
-                    vim.lsp.enable(server_name)
-                end,
-                lua_ls = function()
-                    vim.lsp.config('lua_ls', {
-                        settings = {
-                            Lua = {
-                                diagnostics = {
-                                    globals = { 'vim' }
-                                },
-                            },
-                        },
-                    })
-                    vim.lsp.enable('lua_ls')
+                    local capabilities = require('blink.cmp').get_lsp_capabilities()
+                    vim.lsp.enable(server_name, { capabilities = capabilities })
                 end,
             },
         },
