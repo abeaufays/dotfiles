@@ -28,7 +28,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     end,
 })
 
-pcall(require, "custom.setup")
--- pcall(require, "local.setup")
+pcall(require, "local.setup")
 require("config.lazy")
 
