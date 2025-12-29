@@ -10,6 +10,8 @@ vim.o.tabstop = 4
 vim.o.shiftwidth = 4
 vim.o.expandtab = true
 
+vim.o.scrolloff = 15
+
 -- Sync clipboard between OS and neovim
 -- Scheduled for performance
 vim.schedule(function()
