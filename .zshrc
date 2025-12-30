@@ -1,5 +1,5 @@
-source ~/.config/zsh/prompt
-source ~/.config/zsh/alias
+source ~/.config/zsh/prompt.zsh
+source ~/.config/zsh/alias.zsh
 export PATH="~/.config/scripts:$PATH"
 source <(fzf --zsh)
 
@@ -25,6 +25,6 @@ if [ -x "$(command -v tmux)" ] && [ -n "${DISPLAY}" ] && [ -z "${TMUX}" ]; then
     exec tmux new-session -A -s ${USER} >/dev/null 2>&1
 fi
 
-if [ -f ~/.config/zsh/local ]; then
-    source ~/.config/zsh/local
+if [ -f ~/.config/zsh/local.zsh ]; then
+    source ~/.config/zsh/local.zsh
 fi
