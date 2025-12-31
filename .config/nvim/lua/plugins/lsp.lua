@@ -1,6 +1,16 @@
 return {
     {
         "neovim/nvim-lspconfig",
+        config = function ()
+            vim.api.nvim_create_autocmd('LspAttach', {
+                group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
+                callback = function (event)
+                    local telescope_builtins = require('telescope.builtin')
+                    vim.keymap.set('n', 'grr', telescope_builtins.lsp_references, { buffer=event.buf, desc = '[G]oto [R]eference'})
+                    vim.keymap.set('n', 'gri', telescope_builtins.lsp_implementations, { buffer=event.buf, desc = '[G]oto [I]mplementations'})
+                end
+            })
+        end
     },
     {
         "mason-org/mason.nvim",
