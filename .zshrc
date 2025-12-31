@@ -20,11 +20,6 @@ alias grep='grep --color=auto'
 
 alias dgit='git --git-dir=$HOME/dotfiles.git/ --work-tree=$HOME'
 
-
-if [ -x "$(command -v tmux)" ] && [ -n "${DISPLAY}" ] && [ -z "${TMUX}" ]; then
-    exec tmux new-session -A -s ${USER} >/dev/null 2>&1
-fi
-
 if [ -f ~/.config/zsh/local.zsh ]; then
     source ~/.config/zsh/local.zsh
 fi
