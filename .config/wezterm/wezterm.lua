@@ -4,7 +4,9 @@ local wezterm = require("wezterm")
 -- This will hold the configuration.
 local config = wezterm.config_builder()
 
-config.font = wezterm.font("JetBrains Mono")
+config.font = wezterm.font("SauceCodePro NF")
+config.font_size = 15.0
+config.line_height = 1.05
 
 -- Load local config if it exists (machine-specific settings)
 local ok, local_config = pcall(require, "local")
