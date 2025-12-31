@@ -36,7 +36,7 @@ return {
             local builtin = require 'telescope.builtin'
 
             -- File navigation 
-            vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = '[F]ind [F]iles' })
+            vim.keymap.set('n', '<leader>f', builtin.find_files, { desc = 'Search [F]iles' })
             vim.keymap.set('n', '<leader><leader>', function() builtin.buffers { sort_lastused = true, ignore_current_buffer = true, } end, { desc = '[ ] Find existing buffers'})
 
             -- vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
@@ -44,17 +44,17 @@ return {
             -- vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
 
             -- Config
-            vim.keymap.set('n', '<leader>fct', builtin.builtin, { desc = '[F]ind [C]onfig [T]elescope' })
-            vim.keymap.set('n', '<leader>fcc', function() builtin.colorscheme { enable_preview = true } end, { desc = '[F]ind [C]onfig [C]olorscheme' })
+            vim.keymap.set('n', '<leader>sct', builtin.builtin, { desc = '[S]earch [C]onfig [T]elescope' })
+            vim.keymap.set('n', '<leader>scc', function() builtin.colorscheme { enable_preview = true } end, { desc = '[S]earch [C]onfig [C]olorscheme' })
 
             -- Git
             if is_git_repo() then
-                vim.keymap.set('n', '<leader>fgb', builtin.git_branches, { desc = '[F]ind [G]it [B]ranch' })
-                -- vim.keymap.set('n', '<leader>fga', builtin.git_commits
+                vim.keymap.set('n', '<leader>sgb', builtin.git_branches, { desc = '[S]earch [G]it [B]ranch' })
+                -- vim.keymap.set('n', '<leader>sga', builtin.git_commits
             end
 
             -- Misc
-            vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = '[F]ind [H]elp' })
+            vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
         end,
     }
 }
