@@ -44,17 +44,17 @@ return {
             -- vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
 
             -- Config
-            vim.keymap.set('n', '<leader>sct', builtin.builtin, { desc = '[S]earch [C]onfig [T]elescope' })
-            vim.keymap.set('n', '<leader>scc', function() builtin.colorscheme { enable_preview = true } end, { desc = '[S]earch [C]onfig [C]olorscheme' })
+            vim.keymap.set('n', '<leader>sct', builtin.builtin, { desc = '[T]elescope' })
+            vim.keymap.set('n', '<leader>scc', function() builtin.colorscheme { enable_preview = true } end, { desc = '[C]olorscheme' })
 
             -- Git
             if is_git_repo() then
-                vim.keymap.set('n', '<leader>sgb', builtin.git_branches, { desc = '[S]earch [G]it [B]ranch' })
+                vim.keymap.set('n', '<leader>sgb', builtin.git_branches, { desc = '[B]ranches' })
                 -- vim.keymap.set('n', '<leader>sga', builtin.git_commits
             end
 
             -- Misc
-            vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
+            vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[H]elp' })
         end,
     }
 }
