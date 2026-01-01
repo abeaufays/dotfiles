@@ -20,6 +20,13 @@ end)
 
 vim.keymap.set('n', '<leader>p', vim.cmd.Ex, { desc = '[p]roject view' })
 
+-- Yank current filename
+vim.keymap.set('n', '<leader>yf', function()
+    local filename = vim.fn.expand('%')
+    vim.fn.setreg('+', filename)
+    print('Yanked: ' .. filename)
+end, { desc = '[y]ank [f]ilename' })
+
 
 -- Show lines yanked
 vim.api.nvim_create_autocmd('TextYankPost', {
