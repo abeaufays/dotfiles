@@ -27,6 +27,13 @@ vim.keymap.set('n', '<leader>yf', function()
     print('Yanked: ' .. filename)
 end, { desc = '[y]ank [f]ilename' })
 
+local cwd = vim.uv.cwd()
+local config_dir = vim.fn.expand '~/.config'
+if cwd and cwd:find(config_dir, 1, true) == 1 then
+    vim.keymap.set('n', '<leader>X', '<cmd>source %<CR>', { desc = 'Source file' })
+    vim.keymap.set('n', '<leader>x', ':.lua<CR>', { desc = 'Source line' })
+    vim.keymap.set('v', '<leader>x', ':lua<CR>', { desc = 'Source selection' })
+end
 
 -- Show lines yanked
 vim.api.nvim_create_autocmd('TextYankPost', {
