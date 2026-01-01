@@ -18,13 +18,13 @@ vim.schedule(function()
     vim.o.clipboard = 'unnamedplus'
 end)
 
+vim.keymap.set('n', '<leader>p', vim.cmd.Ex, { desc = '[p]roject view' })
 
-vim.keymap.set("n", "<leader>p", vim.cmd.Ex, {desc = "[p]roject view"})
 
 -- Show lines yanked
 vim.api.nvim_create_autocmd('TextYankPost', {
     desc = 'Highlight when yanking (copying) text',
-    group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
+    group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
     callback = function()
         vim.hl.on_yank()
     end,
@@ -34,6 +34,5 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
-pcall(require, "local.setup")
-require("config.lazy")
-
+pcall(require, 'local.setup')
+require 'config.lazy'
