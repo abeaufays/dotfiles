@@ -11,6 +11,18 @@ return {
         end,
     },
     {
+        'Mofiqul/vscode.nvim',
+        lazy = false,
+        priority = 1000,
+        config = function()
+            require('vscode').setup {
+                group_overrides = {
+                    ['@property'] = { fg = '#7bc6ed' }, -- slightly darker than classic one
+                },
+            }
+        end,
+    },
+    {
         'navarasu/onedark.nvim',
         lazy = false,
         priority = 1000,
@@ -31,7 +43,7 @@ return {
         lazy = false,
         priority = 1000,
         config = function()
-            vim.cmd([[colorscheme tokyonight-night]])
-        end
+            vim.cmd [[colorscheme vscode]]
+        end,
     },
 }
