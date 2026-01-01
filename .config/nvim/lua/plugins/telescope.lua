@@ -60,6 +60,7 @@ return {
             -- Misc
             vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[H]elp' })
 
+            require('custom.telescope.refined_grep').setup()
         end,
     },
 }
