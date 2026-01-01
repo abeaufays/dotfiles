@@ -42,12 +42,12 @@
 
     st = status
     # Add Modified Files: Display modified files since last commit, select some to add to the staging area 
-    amf = "!git diff --name-only | fzf -m --preview='git diff --color {}' | xargs git add"
+    amf = "!git diff --name-only | fzf -m --preview='git diff --color {}' | xargs -r git add"
     # Add Modified Files include New files (long on large repos)
-    amfn = "!git ls-files -mo --exclude-standard | fzf -m --preview='git diff --color {}' | xargs git add"
+    amfn = "!git ls-files -mo --exclude-standard | fzf -m --preview='git diff --color {}' | xargs -r git add"
 
     # Open Modified Files: Display commited files since diverting from main branch, select some and open them in vscode 
-    omf = "!git diff --name-only @ $(git get-reference-commit) | fzf -m --preview='git diff --color --merge-base $(git get-main-branch)' | xargs $EDITOR"
+    omf = "!git diff --name-only @ $(git get-reference-commit) | fzf -m --preview='git diff --color --merge-base $(git get-main-branch)' | xargs -r $EDITOR"
 
     co = commit
     ame = commit --amend
@@ -55,13 +55,13 @@
     wip = commit --message='TMP: [skip ci]' --allow-empty --no-verify
 
     # Fixup on with a GUI selector
-    fix = "!f() { git log `git get-reference-commit`..@ --pretty=format:'%h %s' | fzf --preview='echo {} | sed \"s/ .*$//\" | xargs git show --color ' | cut -c -7 | xargs git commit $1 --fixup ; }; f"
+    fix = "!f() { git log `git get-reference-commit`..@ --pretty=format:'%h %s' | fzf --preview='echo {} | sed \"s/ .*$//\" | xargs git show --color ' | cut -c -7 | xargs -r git commit $1 --fixup ; }; f"
 
     # Apply Fixups
     afix = "!git rebase --autosquash `git get-reference-commit`"
 
     pop = reset @~
-    reset-on = "!f() { git log `git get-reference-commit`^..@ --pretty=format:'%h %s' | fzf | cut -c -7 | xargs git reset $1 ; }; f"
+    reset-on = "!f() { git log `git get-reference-commit`^..@ --pretty=format:'%h %s' | fzf | cut -c -7 | xargs -r git reset $1 ; }; f"
 
     sw = switch
     # Show branches in fzf and select one to switch on
