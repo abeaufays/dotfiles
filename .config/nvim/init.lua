@@ -18,8 +18,6 @@ vim.schedule(function()
     vim.o.clipboard = 'unnamedplus'
 end)
 
-vim.keymap.set('n', '<leader>p', vim.cmd.Ex, { desc = '[p]roject view' })
-
 -- Yank current filename
 vim.keymap.set('n', '<leader>yf', function()
     local filename = vim.fn.expand('%')
