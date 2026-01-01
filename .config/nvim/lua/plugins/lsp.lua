@@ -8,9 +8,10 @@ return {
                     -- LSP keymaps
                     local telescope_builtins = require 'telescope.builtin'
                     vim.keymap.set('n', 'grr', telescope_builtins.lsp_references,
-                        { buffer = event.buf, desc = '[G]oto [R]eference' })
+                        { buffer = event.buf, desc = '[R]eference' })
                     vim.keymap.set('n', 'gri', telescope_builtins.lsp_implementations,
-                        { buffer = event.buf, desc = '[G]oto [I]mplementations' })
+                        { buffer = event.buf, desc = '[I]mplementations' })
+
 
                     -- Formatting
                     local client = vim.lsp.get_client_by_id(event.data.client_id)
