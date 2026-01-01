@@ -12,6 +12,11 @@ return {
                     vim.keymap.set('n', 'gri', telescope_builtins.lsp_implementations,
                         { buffer = event.buf, desc = '[I]mplementations' })
 
+                    vim.keymap.set('n', 'gO', function()
+                        telescope_builtins.lsp_document_symbols {
+                            symbols = { 'class', 'function', 'property' },
+                        }
+                    end, { buffer = event.buf, desc = '[O] Navigate symbols' })
 
                     -- Formatting
                     local client = vim.lsp.get_client_by_id(event.data.client_id)
