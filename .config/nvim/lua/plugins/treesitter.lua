@@ -41,6 +41,8 @@ return {
                     additional_vim_regex_highlighting = false,
                 },
             }
+            -- Custom Remap
+            vim.api.nvim_set_hl(0, '@lsp.type.namespace.python', { link = '@namespace' })
         end,
     },
 }
