@@ -4,6 +4,9 @@ return {
         branch = 'master',
         lazy = false,
         build = ':TSUpdate',
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter-textobjects',
+        },
         config = function()
             require('nvim-treesitter.configs').setup {
                 -- A list of parser names, or "all" (the listed parsers MUST always be installed)
@@ -40,6 +43,45 @@ return {
                     -- Instead of true it can also be a list of languages
                     additional_vim_regex_highlighting = false,
                 },
+                -- Doesn't really work ?
+                -- move = {
+                --     enable = true,
+                --     set_jumps = true,
+                --     goto_next_start = {
+                --         ['f'] = '@function.outer',
+                --         ['c'] = '@class.outer',
+                --     },
+                --     goto_previous_start = {
+                --         ['f'] = '@function.outer',
+                --         ['c'] = '@class.outer',
+                --     },
+                -- },
+                textobjects = {
+                    select = {
+                        enable = true,
+                        keymaps = {
+                            ['ic'] = '@class.inner',
+                            ['ac'] = '@class.outer',
+                            ['if'] = '@function.inner',
+                            ['af'] = '@function.outer',
+                            ['ib'] = '@block.inner',
+                            ['ab'] = '@block.outer',
+                            ['ia'] = '@parameter.inner',
+                            ['aa'] = '@parameter.outer',
+                            ['ik'] = '@call.inner',
+                            ['ak'] = '@call.outer',
+                        },
+                    },
+                },
+                -- swap = {
+                --     enable = true,
+                --     swap_next = {
+                --         ['<leader>a'] = '@parameter.inner',
+                --     },
+                --     swap_previous = {
+                --         ['<leader>A'] = '@parameter.inner',
+                --     },
+                -- },
             }
             -- Custom Remap
             vim.api.nvim_set_hl(0, '@lsp.type.namespace.python', { link = '@namespace' })
