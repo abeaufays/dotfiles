@@ -46,7 +46,9 @@ local refined_grep = function(opts)
 end
 
 M.setup = function()
-    vim.keymap.set('n', '<leader>se', refined_grep, { desc = '[E]xpression (grep)' })
+    vim.keymap.set('n', '<leader>se', function()
+        refined_grep({ cwd = require('oil').get_current_dir() })
+    end, { desc = '[E]xpression (grep)' })
 end
 
 return M

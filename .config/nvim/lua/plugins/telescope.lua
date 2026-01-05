@@ -35,11 +35,34 @@ return {
             -- See `:help telescope.builtin`
             local builtin = require 'telescope.builtin'
 
-            -- File navigation
-            vim.keymap.set('n', '<leader>f', builtin.find_files, { desc = 'Search [F]iles' })
+            -- File navigation (scoped to Oil directory when browsing)
+            vim.keymap.set('n', '<leader>f', function()
+                builtin.find_files({ cwd = require('oil').get_current_dir() })
+            end, { desc = 'Search [F]iles' })
             vim.keymap.set('n', '<leader><leader>', function()
                 builtin.buffers { sort_lastused = true, ignore_current_buffer = true }
             end, { desc = '[ ] Find existing buffers' })
+
+            -- Search directories and browse in Oil
+            vim.keymap.set('n', '<leader>sd', function()
+                local actions = require('telescope.actions')
+                local action_state = require('telescope.actions.state')
+
+                builtin.find_files({
+                    cwd = require('oil').get_current_dir(),
+                    find_command = { 'fd', '-t', 'd', '--hidden', '--exclude', '.git' },
+                    attach_mappings = function(prompt_bufnr)
+                        actions.select_default:replace(function()
+                            local selection = action_state.get_selected_entry()
+                            actions.close(prompt_bufnr)
+                            if selection then
+                                vim.cmd('Oil ' .. vim.fn.fnameescape(selection.path))
+                            end
+                        end)
+                        return true
+                    end,
+                })
+            end, { desc = 'Search [D]irectories' })
 
             -- vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
             -- vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
