@@ -14,7 +14,7 @@ return {
 
                     vim.keymap.set('n', 'gO', function()
                         telescope_builtins.lsp_document_symbols {
-                            symbols = { 'class', 'function', 'property' },
+                            symbols = { 'class', 'function', 'property', 'method' },
                         }
                     end, { buffer = event.buf, desc = '[O] Navigate symbols' })
 
