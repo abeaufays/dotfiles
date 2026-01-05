@@ -6,6 +6,7 @@ return {
         build = ':TSUpdate',
         dependencies = {
             'nvim-treesitter/nvim-treesitter-textobjects',
+            'nvim-treesitter/nvim-treesitter-context',
         },
         config = function()
             require('nvim-treesitter.configs').setup {
@@ -83,6 +84,17 @@ return {
                 --     },
                 -- },
             }
+
+            -- Sticky scroll (treesitter-context)
+            require('treesitter-context').setup {
+                enable = true,
+                max_lines = 3,
+                multiline_threshold = 1,
+            }
+
+            -- Link to Visual for subtle background highlight
+            vim.api.nvim_set_hl(0, 'TreesitterContext', { link = 'Visual' })
+
             -- Custom Remap
             vim.api.nvim_set_hl(0, '@lsp.type.namespace.python', { link = '@namespace' })
         end,
