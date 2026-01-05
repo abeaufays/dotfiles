@@ -7,6 +7,10 @@ return {
                 callback = function(event)
                     -- LSP keymaps
                     local telescope_builtins = require 'telescope.builtin'
+                    vim.keymap.set('n', 'gd', telescope_builtins.lsp_definitions,
+                        { buffer = event.buf, desc = 'Goto [D]efinition' })
+                    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration,
+                        { buffer = event.buf, desc = 'Goto [D]eclaration' })
                     vim.keymap.set('n', 'grr', telescope_builtins.lsp_references,
                         { buffer = event.buf, desc = '[R]eference' })
                     vim.keymap.set('n', 'gri', telescope_builtins.lsp_implementations,
