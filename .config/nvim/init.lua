@@ -46,5 +46,8 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
+-- Floating windows borders
+vim.diagnostic.config { float = { border = 'rounded' } }
+
 pcall(require, 'local.setup')
 require 'config.lazy'
