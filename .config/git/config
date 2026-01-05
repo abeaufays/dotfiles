@@ -42,9 +42,9 @@
 
     st = status
     # Add Modified Files: Display modified files since last commit, select some to add to the staging area 
-    amf = "!git diff --name-only | fzf -m --preview='git diff --color {}' | xargs -r git add"
+    amf = "!git diff --name-only | fzf -m --preview='git diff --color {}' | xargs -r git add $1"
     # Add Modified Files include New files (long on large repos)
-    amfn = "!git ls-files -mo --exclude-standard | fzf -m --preview='git diff --color {}' | xargs -r git add"
+    amfn = "!git ls-files -mo --exclude-standard | fzf -m --preview='git diff --color {}' | xargs -r git add $1"
 
     # Open Modified Files: Display commited files since diverting from main branch, select some and open them in vscode 
     omf = "!git diff --name-only @ $(git get-reference-commit) | fzf -m --preview='git diff --color --merge-base $(git get-main-branch)' | xargs -r $EDITOR"
