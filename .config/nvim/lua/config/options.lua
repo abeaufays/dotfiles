@@ -1,0 +1,19 @@
+-- Show relative numbers in buffer
+vim.o.number = true
+vim.o.relativenumber = true
+
+-- Use space for tabs with set size
+vim.o.expandtab = true
+vim.o.tabstop = 4
+vim.o.softtabstop = 4
+vim.o.shiftwidth = 4
+
+-- Ensure the cursor is not stuck on the edge of window
+vim.o.scrolloff = 15
+vim.o.sidescrolloff = 8
+
+-- Sync vim clipboard with system's
+vim.o.clipboard = 'unnamedplus'
+
+-- Enable mouse
+vim.o.mouse = 'a'
