@@ -8,10 +8,12 @@ config.font = wezterm.font("SauceCodePro NF")
 config.font_size = 15.0
 config.line_height = 1.05
 
+config.hide_tab_bar_if_only_one_tab = true
+
 -- Load local config if it exists (machine-specific settings)
 local ok, local_config = pcall(require, "local")
 if ok and local_config then
-  local_config(config)
+    local_config(config)
 end
 
 -- Finally, return the configuration to wezterm:
