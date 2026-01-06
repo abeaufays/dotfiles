@@ -4,11 +4,8 @@ vim.g.maplocalleader = ' '
 require 'config.options'
 
 -- Yank current filename
-vim.keymap.set('n', '<leader>yf', function()
-    local filename = vim.fn.expand('%')
-    vim.fn.setreg('+', filename)
-    print('Yanked: ' .. filename)
-end, { desc = '[y]ank [f]ilename' })
+vim.keymap.set('n', '<leader>yp', ":let @+=expand('%:.')<CR>", { desc = 'Relative [p]ath' })
+vim.keymap.set('n', '<leader>yP', ':let @+=@%<CR>', { desc = 'Absolute [P]ath' })
 
 local cwd = vim.uv.cwd()
 local config_dir = vim.fn.expand '~/.config'
