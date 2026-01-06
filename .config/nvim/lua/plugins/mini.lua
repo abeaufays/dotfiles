@@ -3,8 +3,6 @@ return {
         'nvim-mini/mini.nvim',
         version = false,
         config = function()
-            local statusline = require 'mini.statusline'
-            statusline.setup { use_icons = true }
             require('mini.move').setup {
                 mappings = {
                     -- Remapping to arrow keys as my tiling window manager is already mapped to <M-hjkl>
