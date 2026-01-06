@@ -17,6 +17,7 @@ return {
                     line_up = '<M-Up>',
                 },
             }
+            require('mini.surround').setup()
         end,
     },
 }
