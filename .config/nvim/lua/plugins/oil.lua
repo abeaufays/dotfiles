@@ -10,6 +10,6 @@ return {
     lazy = false,
     config = function()
         require('oil').setup()
-        vim.keymap.set('n', '<leader>-', ':Oil<CR>', { desc = '[p]roject view' })
+        vim.keymap.set('n', '<leader>-', ':Oil<CR>', { desc = '[-] directory view' })
     end,
 }
