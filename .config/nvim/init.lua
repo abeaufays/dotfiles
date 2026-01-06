@@ -7,6 +7,10 @@ require 'config.options'
 vim.keymap.set('n', '<leader>yp', ":let @+=expand('%:.')<CR>", { desc = 'Relative [p]ath' })
 vim.keymap.set('n', '<leader>yP', ':let @+=@%<CR>', { desc = 'Absolute [P]ath' })
 
+-- Make identing in visual mode stay in visual mode
+vim.keymap.set('v', '<', '<gv', { desc = 'Indent left and reselect' })
+vim.keymap.set('v', '>', '>gv', { desc = 'Indent right and reselect' })
+
 local cwd = vim.uv.cwd()
 local config_dir = vim.fn.expand '~/.config'
 if cwd and cwd:find(config_dir, 1, true) == 1 then
