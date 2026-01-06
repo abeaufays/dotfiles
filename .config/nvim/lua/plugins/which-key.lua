@@ -45,16 +45,17 @@ return {
 
             -- Document existing key chains
             spec = {
-                { '<leader>s', group = '[S]earch' },
+                { '<leader>s',  group = '[S]earch' },
                 { '<leader>sc', group = '[C]onfig' },
                 { '<leader>sg', group = '[G]it' },
-                { '<leader>t', group = '[T]oggle' },
-                { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
-                { 'gr', group = 'LSP' },
-                { 'gra', group = 'Code [A]ction' },
-                { 'grn', group = 'Re[N]ame' },
-                { 'grt', group = '[T]ype definition' },
+                { '<leader>t',  group = '[T]oggle' },
+                { '<leader>h',  group = 'Git [H]unk',       mode = { 'n', 'v' } },
+                { 'gr',         group = 'LSP' },
+                { 'gra',        group = 'Code [A]ction' },
+                { 'grn',        group = 'Re[N]ame' },
+                { 'grt',        group = '[T]ype definition' },
+                { 'y',          group = '[Y]ank' },
             },
         },
-    }
+    },
 }
