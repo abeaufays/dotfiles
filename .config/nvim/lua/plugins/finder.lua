@@ -1,89 +1,76 @@
 return {
+    -- FZF-LUA CONFIG
     {
-        'nvim-telescope/telescope.nvim',
+        'ibhagwan/fzf-lua',
         event = 'VimEnter',
         dependencies = {
-            'nvim-lua/plenary.nvim',
-            {
-                'nvim-telescope/telescope-fzf-native.nvim',
-                build = 'make',
-                cond = function()
-                    return vim.fn.executable 'make' == 1
-                end,
-            },
-            { 'nvim-telescope/telescope-ui-select.nvim' },
-            { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
+            { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
         },
         config = function()
-            require('telescope').setup {
-                defaults = require('telescope.themes').get_ivy(),
-                extensions = {
-                    ['ui-select'] = {
-                        require('telescope.themes').get_dropdown(),
+            local fzf = require 'fzf-lua'
+
+            -- Setup with ivy-like theme (bottom position)
+            fzf.setup {
+                winopts = {
+                    height = 0.40,
+                    width = 1.0,
+                    row = 1.0,
+                    preview = {
+                        layout = 'horizontal',
+                        horizontal = 'right:50%',
                     },
-                    ['fzf'] = {},
+                },
+                fzf_opts = {
+                    ['--layout'] = 'reverse',
                 },
             }
-            pcall(require('telescope').load_extension, 'fzf')
-            pcall(require('telescope').load_extension, 'ui-select')
 
             local function is_git_repo()
                 vim.fn.system 'git rev-parse --is-inside-work-tree'
                 return vim.v.shell_error == 0
             end
 
-            -- See `:help telescope.builtin`
-            local builtin = require 'telescope.builtin'
-
             -- File navigation (scoped to Oil directory when browsing)
             vim.keymap.set('n', '<leader>f', function()
-                builtin.find_files({ cwd = require('oil').get_current_dir() })
+                fzf.files { cwd = require('oil').get_current_dir() }
             end, { desc = 'Search [F]iles' })
+
             vim.keymap.set('n', '<leader><leader>', function()
-                builtin.buffers { sort_lastused = true, ignore_current_buffer = true }
+                fzf.buffers()
             end, { desc = '[ ] Find existing buffers' })
 
-            -- Search directories and browse in Oil
-            vim.keymap.set('n', '<leader>sd', function()
-                local actions = require('telescope.actions')
-                local action_state = require('telescope.actions.state')
+            vim.keymap.set('n', '<leader>sg', fzf.live_grep, { desc = '[G]rep' })
 
-                builtin.find_files({
+            -- Search directories and browse in Oil
+            -- NOTE: Custom Oil integration with directory filtering is non-trivial in fzf-lua
+            -- This provides a basic implementation - may need refinement for exact parity
+            vim.keymap.set('n', '<leader>sd', function()
+                fzf.files {
                     cwd = require('oil').get_current_dir(),
-                    find_command = { 'fd', '-t', 'd', '--hidden', '--exclude', '.git' },
-                    attach_mappings = function(prompt_bufnr)
-                        actions.select_default:replace(function()
-                            local selection = action_state.get_selected_entry()
-                            actions.close(prompt_bufnr)
-                            if selection then
-                                vim.cmd('Oil ' .. vim.fn.fnameescape(selection.path))
+                    cmd = 'fd -t d --hidden --exclude .git',
+                    actions = {
+                        ['default'] = function(selected)
+                            if selected and selected[1] then
+                                -- Strip emoji and formatting, extract just the path
+                                local path = selected[1]:gsub('^[^%w/%.]+%s*', '')
+                                vim.cmd('Oil ' .. vim.fn.fnameescape(path))
                             end
-                        end)
-                        return true
-                    end,
-                })
+                        end,
+                    },
+                }
             end, { desc = 'Search [D]irectories' })
 
-            -- vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-            -- vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
-            -- vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
-
             -- Config
-            vim.keymap.set('n', '<leader>sct', builtin.builtin, { desc = '[T]elescope' })
-            vim.keymap.set('n', '<leader>scc', function()
-                builtin.colorscheme { enable_preview = true }
-            end, { desc = '[C]olorscheme' })
+            vim.keymap.set('n', '<leader>scb', fzf.builtin, { desc = '[B]uiltin' })
+            vim.keymap.set('n', '<leader>scc', fzf.colorschemes, { desc = '[C]olorscheme' })
 
             -- Git
             if is_git_repo() then
-                vim.keymap.set('n', '<leader>sgb', builtin.git_branches, { desc = '[B]ranches' })
-                -- vim.keymap.set('n', '<leader>sga', builtin.git_commits
+                vim.keymap.set('n', '<leader>sgb', fzf.git_branches, { desc = '[B]ranches' })
             end
 
             -- Misc
-            vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[H]elp' })
-
-            require('custom.telescope.refined_grep').setup()
+            vim.keymap.set('n', '<leader>sh', fzf.help_tags, { desc = '[H]elp' })
         end,
     },
 }
