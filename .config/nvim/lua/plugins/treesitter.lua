@@ -93,7 +93,7 @@ return {
             }
 
             -- Link to Visual for subtle background highlight
-            vim.api.nvim_set_hl(0, 'TreesitterContext', { link = 'Visual' })
+            vim.api.nvim_set_hl(0, 'TreesitterContext', { link = 'StatusLine' })
 
             -- Custom Remap
             vim.api.nvim_set_hl(0, '@lsp.type.namespace.python', { link = '@namespace' })
