@@ -67,6 +67,8 @@ return {
             -- Git
             if is_git_repo() then
                 vim.keymap.set('n', '<leader>gb', fzf.git_branches, { desc = '[B]ranches' })
+                vim.keymap.set('n', '<leader>gs', fzf.git_status, { desc = '[S]tatus' })
+                vim.keymap.set('n', '<leader>gf', fzf.git_bcommits, { desc = '[F]ile history' })
             end
 
             -- Misc
