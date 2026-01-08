@@ -1,10 +1,10 @@
 -- Yank current filename
-vim.keymap.set('n', '<leader>yfp', ":let @+=expand('%:.')<CR>", { desc = 'Relative [p]ath' })
-vim.keymap.set('n', '<leader>yfP', ":let @+=expand('%:p')<CR>", { desc = 'Absolute [P]ath' })
-vim.keymap.set('n', '<leader>yfn', ":let @+=expand('%:t')<CR>", { desc = 'File [n]ame' })
-vim.keymap.set('n', '<leader>yfN', ":let @+=expand('%:t:r')<CR>", { desc = 'File base[N]ame' })
+vim.keymap.set('n', '<leader>yp', ":let @+=expand('%:.')<CR>", { desc = 'Relative [p]ath' })
+vim.keymap.set('n', '<leader>yP', ":let @+=expand('%:p')<CR>", { desc = 'Absolute [P]ath' })
+vim.keymap.set('n', '<leader>yn', ":let @+=expand('%:t')<CR>", { desc = 'File [n]ame' })
+vim.keymap.set('n', '<leader>yN', ":let @+=expand('%:t:r')<CR>", { desc = 'File base[N]ame' })
 
-vim.keymap.set({ 'n', 'v' }, '<Leader>yfi', function()
+vim.keymap.set({ 'n', 'v' }, '<Leader>yi', function()
     local item = { file = vim.fn.expand '%:p' } -- or however you get the file path
 
     if not item or not item.file then
