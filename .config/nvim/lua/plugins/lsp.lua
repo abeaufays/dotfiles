@@ -21,10 +21,6 @@ return {
                     local client = vim.lsp.get_client_by_id(event.data.client_id)
                     if client then
                         if client.supports_method 'textDocument/formatting' then
-                            vim.keymap.set('n', '<leader>=', function()
-                                vim.lsp.buf.format { bufnr = event.buf, id = client.id }
-                            end, { desc = '[=] Format buffer' })
-
                             vim.api.nvim_create_autocmd('BufWritePre', {
                                 buffer = event.buf,
                                 callback = function()
