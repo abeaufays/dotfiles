@@ -2,6 +2,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 require 'config.options'
+require 'config.keymaps'
 
 -- Yank current filename
 vim.keymap.set('n', '<leader>yp', ":let @+=expand('%:.')<CR>", { desc = 'Relative [p]ath' })
