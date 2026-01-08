@@ -48,6 +48,7 @@ return {
                 { '<leader>s',  group = '[S]earch' },
                 { '<leader>sc', group = '[C]onfig' },
                 { '<leader>g',  group = '[G]it' },
+                { '<leader>gc', group = '[C]onfig' },
                 { '<leader>t',  group = '[T]oggle' },
                 { 'gr',         group = 'LSP' },
                 { 'gra',        group = 'Code [A]ction' },
