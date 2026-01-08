@@ -7,12 +7,10 @@ return {
                 callback = function(event)
                     -- LSP keymaps
                     local fzf = require 'fzf-lua'
-                    vim.keymap.set('n', 'gd', fzf.lsp_definitions,
-                        { buffer = event.buf, desc = 'Goto [D]efinition' })
+                    vim.keymap.set('n', 'gd', fzf.lsp_definitions, { buffer = event.buf, desc = 'Goto [D]efinition' })
                     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration,
                         { buffer = event.buf, desc = 'Goto [D]eclaration' })
-                    vim.keymap.set('n', 'grr', fzf.lsp_references,
-                        { buffer = event.buf, desc = '[R]eference' })
+                    vim.keymap.set('n', 'grr', fzf.lsp_references, { buffer = event.buf, desc = '[R]eference' })
                     vim.keymap.set('n', 'gri', fzf.lsp_implementations,
                         { buffer = event.buf, desc = '[I]mplementations' })
 
@@ -31,6 +29,10 @@ return {
                                 buffer = event.buf,
                                 callback = function()
                                     vim.lsp.buf.format { bufnr = event.buf, id = client.id }
+                                    vim.lsp.buf.code_action {
+                                        context = { only = { 'source.organizeImports' } },
+                                        apply = true,
+                                    }
                                 end,
                             })
                         end
