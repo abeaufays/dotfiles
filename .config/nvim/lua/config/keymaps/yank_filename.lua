@@ -1,4 +1,10 @@
-vim.keymap.set({ 'n', 'v' }, '<Leader>yf', function()
+-- Yank current filename
+vim.keymap.set('n', '<leader>yfp', ":let @+=expand('%:.')<CR>", { desc = 'Relative [p]ath' })
+vim.keymap.set('n', '<leader>yfP', ":let @+=expand('%:p')<CR>", { desc = 'Absolute [P]ath' })
+vim.keymap.set('n', '<leader>yfn', ":let @+=expand('%:t')<CR>", { desc = 'File [n]ame' })
+vim.keymap.set('n', '<leader>yfN', ":let @+=expand('%:t:r')<CR>", { desc = 'File base[N]ame' })
+
+vim.keymap.set({ 'n', 'v' }, '<Leader>yfi', function()
     local item = { file = vim.fn.expand '%:p' } -- or however you get the file path
 
     if not item or not item.file then
@@ -72,4 +78,4 @@ vim.keymap.set({ 'n', 'v' }, '<Leader>yf', function()
             vim.notify('Copy-yanked ' .. result, vim.log.levels.INFO)
         end
     end)
-end, { noremap = true, silent = true, desc = '[F]ile' })
+end, { noremap = true, silent = true, desc = '[I]nteractive' })
