@@ -9,58 +9,50 @@ return {
             'theHamsta/nvim-dap-virtual-text',
             'mfussenegger/nvim-dap-python',
         },
-        keys = {
-            -- Basic debugging keymaps, feel free to change to your liking!
-            {
-                '<F5>',
-                function()
-                    require('dap').continue()
-                end,
-                desc = 'Debug: Start/Continue',
-            },
-            {
-                '<F10>',
-                function()
-                    require('dap').step_into()
-                end,
-                desc = 'Debug: Step Into',
-            },
-            {
-                '<F11>',
-                function()
-                    require('dap').step_over()
-                end,
-                desc = 'Debug: Step Over',
-            },
-            {
-                '<F12>',
-                function()
-                    require('dap').step_out()
-                end,
-                desc = 'Debug: Step Out',
-            },
-            {
-                '<leader>b',
-                function()
-                    require('dap').toggle_breakpoint()
-                end,
-                desc = 'Debug: Toggle Breakpoint',
-            },
-            {
-                '<leader>B',
-                function()
-                    require('dap').set_breakpoint(vim.fn.input 'Breakpoint condition: ')
-                end,
-                desc = 'Debug: Set Breakpoint',
-            },
-            {
-                '<F7>',
-                function()
-                    require('dapui').toggle()
-                end,
-                desc = 'Debug: See last session result.',
-            },
-        },
+        keys = function(_, keys)
+            local dap = require 'dap'
+            local dapui = require 'dapui'
+            return {
+                {
+                    '<F5>',
+                    dap.continue,
+                    desc = 'Debug: Start/Continue',
+                },
+                {
+                    '<F10>',
+                    dap.step_into,
+                    desc = 'Debug: Step Into',
+                },
+                {
+                    '<F11>',
+                    dap.step_over,
+                    desc = 'Debug: Step Over',
+                },
+                {
+                    '<F12>',
+                    dap.step_out,
+                    desc = 'Debug: Step Out',
+                },
+                {
+                    '<leader>b',
+                    dap.toggle_breakpoint,
+                    desc = 'Debug: Toggle Breakpoint',
+                },
+                {
+                    '<leader>B',
+                    function()
+                        dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
+                    end,
+                    desc = 'Debug: Set Breakpoint',
+                },
+                {
+                    '<F7>',
+                    dapui.toggle,
+                    desc = 'Debug: See last session result.',
+                },
+                unpack(keys),
+            }
+        end,
         config = function()
             local dap = require 'dap'
             local dapui = require 'dapui'
@@ -77,8 +69,6 @@ return {
                 -- You'll need to check that you have the required things installed
                 -- online, please don't ask me how to install them :)
                 ensure_installed = {
-                    -- Update this to ensure that you have the debuggers for the langs you want
-                    'delve',
                     'debugpy',
                 },
             }
