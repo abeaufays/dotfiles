@@ -1,5 +1,8 @@
 require 'config.keymaps.yank_filename'
 
+-- Make it easy to exit terminal mode
+vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+
 -- Make identing in visual mode stay in visual mode
 vim.keymap.set('v', '<', '<gv', { desc = 'Indent left and reselect' })
 vim.keymap.set('v', '>', '>gv', { desc = 'Indent right and reselect' })
