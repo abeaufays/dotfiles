@@ -1,3 +1,7 @@
+-- Enable local nvim config
+vim.o.exrc = true
+vim.o.secure = true
+
 -- Show relative numbers in buffer
 vim.o.number = true
 vim.o.relativenumber = true
