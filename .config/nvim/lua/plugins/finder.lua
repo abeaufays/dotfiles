@@ -40,6 +40,7 @@ return {
             end, { desc = '[ ] Find existing buffers' })
 
             vim.keymap.set('n', '<leader>sg', fzf.live_grep, { desc = '[G]rep' })
+            vim.keymap.set('n', '<leader>ss', fzf.resume, { desc = 'Re[S]ume' })
 
             -- Search directories and browse in Oil
             -- NOTE: Custom Oil integration with directory filtering is non-trivial in fzf-lua
