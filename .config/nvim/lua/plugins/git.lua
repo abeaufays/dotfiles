@@ -23,6 +23,21 @@ return {
                     print 'No commit found for this line'
                 end
             end, { desc = 'open [P]R introducing line' })
+            vim.keymap.set('n', '<leader>gy', function()
+                local file = vim.fn.expand '%:~:.'
+                local line = vim.fn.line '.'
+                -- Get remote URL
+                local remote_url = vim.fn.system('git config --get remote.origin.url'):gsub('%s+$', '')
+                -- Convert SSH/HTTPS URL to web URL
+                local web_url = remote_url:gsub('git@github%.com:', 'https://github.com/'):gsub('%.git$', '')
+                -- Get current commit hash
+                local commit = vim.fn.system('git rev-parse HEAD'):gsub('%s+$', '')
+                -- Construct GitHub permalink
+                local github_link = string.format('%s/blob/%s/%s#L%d', web_url, commit, file, line)
+                -- Yank to system clipboard
+                vim.fn.setreg('+', github_link)
+                print('Yanked: ' .. github_link)
+            end, { desc = '[Y]ank github link to line' })
         end,
     },
 }
