@@ -39,7 +39,9 @@ return {
                 fzf.buffers()
             end, { desc = '[ ] Find existing buffers' })
 
-            vim.keymap.set('n', '<leader>sg', fzf.live_grep, { desc = '[G]rep' })
+            vim.keymap.set('n', '<leader>sg', function()
+                fzf.live_grep { cwd = require('oil').get_current_dir() }
+            end, { desc = '[G]rep' })
             vim.keymap.set('n', '<leader>ss', fzf.resume, { desc = 'Re[S]ume' })
 
             -- Search directories and browse in Oil
