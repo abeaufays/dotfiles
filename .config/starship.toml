@@ -1,0 +1,51 @@
+# Starship configuration
+# See https://starship.rs/config/ for more options
+
+# Two-line prompt format
+format = """
+$cmd_duration\
+$directory\
+$python\
+$git_branch\
+$git_state\
+$line_break\
+$character"""
+
+[cmd_duration]
+format = '''([Took $duration
+](yellow))'''
+
+[directory]
+format = "[$read_only]($read_only_style)[$repo_root]($repo_root_style)[$path]($style)"
+style = "white"
+repo_root_style = "96"
+truncation_length = 100
+truncate_to_repo = true
+repo_root_format = '[$read_only]($read_only_style)[\[$repo_root\]]($repo_root_style)[$path]($style)'
+
+[git_branch]
+format = ' [\(($branch(:$remote_branch))\)]($style) '
+style = 'cyan'
+
+[git_state]
+format = '\[[$state($progress_current/$progress_total)]($style)\] '
+style = "green"
+
+[python]
+format = ' []($style)'
+style = "150"
+detect_extensions = []
+detect_files = []
+detect_folders = []
+# Only show when VIRTUAL_ENV is set
+python_binary = []
+
+[time]
+disabled = true
+format = '[\[$time\]]($style)'
+style = "white"
+time_format = "%T"
+
+[character]
+success_symbol = "[❯](bold white)"
+error_symbol = "[❯](bold red)"

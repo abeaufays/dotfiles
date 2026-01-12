@@ -1,4 +1,4 @@
-source ~/.config/zsh/prompt.zsh
+eval "$(starship init zsh)"
 source ~/.config/zsh/alias.zsh
 export PATH="~/.config/scripts:$PATH"
 source <(fzf --zsh)
