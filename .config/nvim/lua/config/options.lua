@@ -25,3 +25,5 @@ vim.o.mouse = 'a'
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 vim.o.ignorecase = true
 vim.o.smartcase = true
+
+vim.o.splitright = true
