@@ -8,6 +8,7 @@ return {
 
             -- Configs
             vim.keymap.set('n', '<leader>gcb', gitsigns.toggle_current_line_blame, { desc = 'toggle [B]lame' })
+            vim.keymap.set('n', '<leader>gd', '<cmd>Gvdiff<cr>', { desc = '[D]iff' })
             vim.keymap.set('n', '<leader>gp', function()
                 local file = vim.fn.expand '%'
                 local line = vim.fn.line '.'
