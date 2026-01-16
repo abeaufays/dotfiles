@@ -6,16 +6,22 @@ return {
                 group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
                 callback = function(event)
                     -- LSP keymaps
-                    local fzf = require 'fzf-lua'
-                    vim.keymap.set('n', 'gd', fzf.lsp_definitions, { buffer = event.buf, desc = 'Goto [D]efinition' })
+                    local Snacks = require 'snacks'
+                    vim.keymap.set('n', 'gd', function()
+                        Snacks.picker.lsp_definitions()
+                    end, { buffer = event.buf, desc = 'Goto [D]efinition' })
                     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration,
                         { buffer = event.buf, desc = 'Goto [D]eclaration' })
-                    vim.keymap.set('n', 'grr', fzf.lsp_references, { buffer = event.buf, desc = '[R]eference' })
-                    vim.keymap.set('n', 'gri', fzf.lsp_implementations,
-                        { buffer = event.buf, desc = '[I]mplementations' })
+                    vim.keymap.set('n', 'grr', function()
+                        Snacks.picker.lsp_references()
+                    end, { buffer = event.buf, desc = '[R]eference' })
+                    vim.keymap.set('n', 'gri', function()
+                        Snacks.picker.lsp_implementations()
+                    end, { buffer = event.buf, desc = '[I]mplementations' })
 
-                    vim.keymap.set('n', 'gO', fzf.lsp_document_symbols,
-                        { buffer = event.buf, desc = '[O] Navigate symbols' })
+                    vim.keymap.set('n', 'gO', function()
+                        Snacks.picker.lsp_symbols()
+                    end, { buffer = event.buf, desc = '[O] Navigate symbols' })
 
                     -- Formatting
                     local client = vim.lsp.get_client_by_id(event.data.client_id)
