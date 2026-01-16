@@ -27,3 +27,4 @@ vim.o.ignorecase = true
 vim.o.smartcase = true
 
 vim.o.splitright = true
+vim.o.signcolumn = 'yes'
