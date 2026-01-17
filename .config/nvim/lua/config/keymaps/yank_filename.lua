@@ -4,78 +4,47 @@ vim.keymap.set('n', '<leader>yP', ":let @+=expand('%:p')<CR>", { desc = 'Absolut
 vim.keymap.set('n', '<leader>yn', ":let @+=expand('%:t')<CR>", { desc = 'File [n]ame' })
 vim.keymap.set('n', '<leader>yN', ":let @+=expand('%:t:r')<CR>", { desc = 'File base[N]ame' })
 
-vim.keymap.set({ 'n', 'v' }, '<Leader>yi', function()
-    local item = { file = vim.fn.expand '%:p' } -- or however you get the file path
-
-    if not item or not item.file then
-        return
+local function get_dotted_path()
+    local item = { file = vim.fn.expand '%:p' }
+    local rel_path = vim.fn.fnamemodify(item.file, ':.')
+    if not rel_path:match '%.py$' then
+        return ''
     end
 
-    local vals = {
-        ['BASENAME'] = vim.fn.fnamemodify(item.file, ':t:r'),
-        ['FILENAME'] = vim.fn.fnamemodify(item.file, ':t'),
-        ['PATH (REL)'] = vim.fn.fnamemodify(item.file, ':.'),
-        ['PATH (HOME)'] = vim.fn.fnamemodify(item.file, ':~'),
-        ['PYTHON IMPORT'] = (function()
-            local rel_path = vim.fn.fnamemodify(item.file, ':.')
-            if not rel_path:match '%.py$' then
-                return ''
-            end
+    -- Strip leading "src/" if present
+    rel_path = rel_path:gsub('^src[\\/]', '')
 
-            -- Strip leading "src/" if present
-            rel_path = rel_path:gsub('^src[\\/]', '')
+    local without_ext = rel_path:gsub('%.py$', '')
+    return without_ext:gsub('/', '.'):gsub('\\', '.')
+end
 
-            local without_ext = rel_path:gsub('%.py$', '')
-            local module_path = without_ext:gsub('/', '.'):gsub('\\', '.')
-
-            local last_dot = module_path:match '.*()%.'
-            if not last_dot then
-                return 'import ' .. module_path
-            else
-                local base = module_path:sub(1, last_dot - 1)
-                local mod = module_path:sub(last_dot + 1)
-                return ('from %s import %s'):format(base, mod)
-            end
-        end)(),
-    }
-
-    -- Define keys in desired order
-    local ordered_keys = {
-        'PATH (REL)',
-        'PYTHON IMPORT',
-        'PATH (HOME)',
-        'FILENAME',
-        'BASENAME',
-    }
-
-    -- Filter while preserving order
-    local options = {}
-    for _, key in ipairs(ordered_keys) do
-        if vals[key] and vals[key] ~= '' then
-            table.insert(options, key)
+vim.keymap.set('n', '<leader>yI',
+    function()
+        local module_path = get_dotted_path()
+        local last_dot = module_path:match '.*()%.'
+        local import
+        if not last_dot then
+            import = 'import ' .. module_path
+        else
+            local base = module_path:sub(1, last_dot - 1)
+            local mod = module_path:sub(last_dot + 1)
+            import = ('from %s import %s'):format(base, mod)
         end
-    end
+        vim.fn.setreg('"', import)
 
-    if vim.tbl_isempty(options) then
-        vim.notify('No values to copy', vim.log.levels.WARN)
-        return
-    end
+        -- Yank to system clipboard
+        vim.fn.setreg('+', import)
 
-    vim.ui.select(options, {
-        prompt = 'Choose to copy to clipboard:',
-        format_item = function(list_item)
-            return ('%s: %s'):format(list_item, vals[list_item])
-        end,
-    }, function(choice)
-        local result = vals[choice]
-        if result then
-            -- Yank to unnamed register (for use with `p`/`P`)
-            vim.fn.setreg('"', result)
+        vim.notify('Copy-yanked ' .. import, vim.log.levels.INFO)
+    end, { desc = 'python [I]mport' })
 
-            -- Yank to system clipboard
-            vim.fn.setreg('+', result)
+vim.keymap.set('n', '<leader>yi',
+    function()
+        local module_path = get_dotted_path()
+        vim.fn.setreg('"', module_path)
 
-            vim.notify('Copy-yanked ' .. result, vim.log.levels.INFO)
-        end
-    end)
-end, { noremap = true, silent = true, desc = '[I]nteractive' })
+        -- Yank to system clipboard
+        vim.fn.setreg('+', module_path)
+
+        vim.notify('Copy-yanked ' .. module_path, vim.log.levels.INFO)
+    end, { desc = 'python [I]mport' })
