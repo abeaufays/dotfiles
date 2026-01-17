@@ -5,7 +5,7 @@ return {
         opts = {
             -- delay between pressing a key and opening which-key (milliseconds)
             -- this setting is independent of vim.o.timeoutlen
-            delay = 0,
+            delay = 500,
             icons = {
                 -- set icon mappings to true if you have a Nerd Font
                 mappings = vim.g.have_nerd_font,
@@ -45,17 +45,16 @@ return {
 
             -- Document existing key chains
             spec = {
-                { '<leader>s',  group = '[S]earch' },
+                { '<leader>f',  group = '[F]ind' },
                 { '<leader>sc', group = '[C]onfig' },
                 { '<leader>g',  group = '[G]it' },
                 { '<leader>gc', group = '[C]onfig' },
                 { '<leader>t',  group = '[T]oggle' },
+                { '<leader>y',  group = '[Y]ank' },
                 { 'gr',         group = 'LSP' },
                 { 'gra',        group = 'Code [A]ction' },
                 { 'grn',        group = 'Re[N]ame' },
                 { 'grt',        group = '[T]ype definition' },
-                { '<leader>y',  group = '[Y]ank' },
-                { '<leader>yf', group = '[F]ile' },
             },
         },
     },

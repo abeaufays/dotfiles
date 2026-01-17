@@ -18,11 +18,11 @@ return {
         local keys = {
             -- File navigation (scoped to Oil directory when browsing)
             {
-                '<leader>f',
+                '<leader>ff',
                 function()
                     Snacks.picker.files { cwd = require('oil').get_current_dir() }
                 end,
-                desc = 'Search [F]iles',
+                desc = '[F]iles',
             },
             -- Buffers
             {
@@ -30,11 +30,11 @@ return {
                 function()
                     Snacks.picker.buffers { current = false }
                 end,
-                desc = '[ ] Find existing buffers',
+                desc = '[ ] Find opened buffer',
             },
             -- Grep
             {
-                '<leader>sg',
+                '<leader>fg',
                 function()
                     Snacks.picker.grep { cwd = require('oil').get_current_dir() }
                 end,
@@ -42,15 +42,15 @@ return {
             },
             -- Resume
             {
-                '<leader>ss',
+                '<leader>fr',
                 function()
                     Snacks.picker.resume()
                 end,
-                desc = 'Re[S]ume',
+                desc = '[R]esume',
             },
             -- Search directories and browse in Oil / To improve
             {
-                '<leader>sd',
+                '<leader>fd',
                 function()
                     local cwd = require('oil').get_current_dir() or vim.loop.cwd()
                     Snacks.picker.pick {
@@ -76,7 +76,7 @@ return {
                         end,
                     }
                 end,
-                desc = 'Search [D]irectories',
+                desc = '[D]irectories',
             },
             -- Config
             {
@@ -95,7 +95,7 @@ return {
             },
             -- Help
             {
-                '<leader>sh',
+                '<leader>fh',
                 function()
                     Snacks.picker.help()
                 end,
