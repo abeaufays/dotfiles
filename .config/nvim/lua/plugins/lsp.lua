@@ -22,23 +22,6 @@ return {
                     vim.keymap.set('n', 'gO', function()
                         Snacks.picker.lsp_symbols()
                     end, { buffer = event.buf, desc = '[O] Navigate symbols' })
-
-                    -- Formatting
-                    local client = vim.lsp.get_client_by_id(event.data.client_id)
-                    if client then
-                        if client.supports_method 'textDocument/formatting' then
-                            vim.api.nvim_create_autocmd('BufWritePre', {
-                                buffer = event.buf,
-                                callback = function()
-                                    vim.lsp.buf.format { bufnr = event.buf, id = client.id }
-                                    vim.lsp.buf.code_action {
-                                        context = { only = { 'source.organizeImports' } },
-                                        apply = true,
-                                    }
-                                end,
-                            })
-                        end
-                    end
                 end,
             })
         end,
