@@ -5,10 +5,10 @@ return {
         lazy = false,
         build = ':TSUpdate',
         dependencies = {
-            'nvim-treesitter/nvim-treesitter-textobjects',
             'nvim-treesitter/nvim-treesitter-context',
         },
         config = function()
+            ---@diagnostic disable-next-line: missing-fields
             require('nvim-treesitter.configs').setup {
                 -- A list of parser names, or "all" (the listed parsers MUST always be installed)
                 ensure_installed = { 'c', 'python', 'lua', 'vim', 'vimdoc', 'query', 'markdown', 'markdown_inline' },
@@ -44,45 +44,6 @@ return {
                     -- Instead of true it can also be a list of languages
                     additional_vim_regex_highlighting = false,
                 },
-                -- Doesn't really work ?
-                -- move = {
-                --     enable = true,
-                --     set_jumps = true,
-                --     goto_next_start = {
-                --         ['f'] = '@function.outer',
-                --         ['c'] = '@class.outer',
-                --     },
-                --     goto_previous_start = {
-                --         ['f'] = '@function.outer',
-                --         ['c'] = '@class.outer',
-                --     },
-                -- },
-                textobjects = {
-                    select = {
-                        enable = true,
-                        keymaps = {
-                            ['ic'] = '@class.inner',
-                            ['ac'] = '@class.outer',
-                            ['if'] = '@function.inner',
-                            ['af'] = '@function.outer',
-                            ['ib'] = '@block.inner',
-                            ['ab'] = '@block.outer',
-                            ['ia'] = '@parameter.inner',
-                            ['aa'] = '@parameter.outer',
-                            ['ik'] = '@call.inner',
-                            ['ak'] = '@call.outer',
-                        },
-                    },
-                },
-                -- swap = {
-                --     enable = true,
-                --     swap_next = {
-                --         ['<leader>a'] = '@parameter.inner',
-                --     },
-                --     swap_previous = {
-                --         ['<leader>A'] = '@parameter.inner',
-                --     },
-                -- },
             }
 
             -- Sticky scroll (treesitter-context)
@@ -92,7 +53,7 @@ return {
                 multiline_threshold = 1,
             }
 
-            -- Link to Visual for subtle background highlight
+            -- Highlight stickyscroll differently from rest of code
             vim.api.nvim_set_hl(0, 'TreesitterContext', { link = 'StatusLine' })
 
             -- Custom Remap

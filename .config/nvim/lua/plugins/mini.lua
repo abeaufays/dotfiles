@@ -18,6 +18,27 @@ return {
                 },
             }
             require('mini.surround').setup()
+            require('mini.ai').setup({
+                custom_textobjects = {
+                    a = require('mini.ai').gen_spec.argument(),
+                    f = require('mini.ai').gen_spec.treesitter({
+                        a = '@function.outer',
+                        i = '@function.inner',
+                    }),
+                    c = require('mini.ai').gen_spec.treesitter({
+                        a = '@class.outer',
+                        i = '@class.inner',
+                    }),
+                    o = require('mini.ai').gen_spec.treesitter({
+                        a = { '@loop.outer', '@conditional.outer' },
+                        i = { '@loop.inner', '@conditional.inner' },
+                    }),
+                },
+
+                -- Module options
+                n_lines = 500,                   -- How far to look for the object
+                search_method = 'cover_or_next', -- Jumps to next if not inside one
+            })
         end,
     },
 }
