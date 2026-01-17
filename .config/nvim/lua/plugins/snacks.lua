@@ -9,14 +9,11 @@ return {
         statuscolumn = { enabled = true },
         words = { enabled = true },
         picker = { enabled = true },
+        gh = { enabled = true },
+        gitbrowse = { enabled = true },
     },
     keys = function()
         local Snacks = require 'snacks'
-
-        local function is_git_repo()
-            vim.fn.system 'git rev-parse --is-inside-work-tree'
-            return vim.v.shell_error == 0
-        end
 
         local keys = {
             -- File navigation (scoped to Oil directory when browsing)
@@ -51,7 +48,7 @@ return {
                 end,
                 desc = 'Re[S]ume',
             },
-            -- Search directories and browse in Oil
+            -- Search directories and browse in Oil / To improve
             {
                 '<leader>sd',
                 function()
@@ -104,32 +101,62 @@ return {
                 end,
                 desc = '[H]elp',
             },
-        }
-
-        -- Add Git keymaps if in a git repo
-        if is_git_repo() then
-            table.insert(keys, {
+            -- Git
+            -- Branches
+            {
                 '<leader>gb',
                 function()
                     Snacks.picker.git_branches()
                 end,
                 desc = '[B]ranches',
-            })
-            table.insert(keys, {
-                '<leader>gs',
+            },
+            -- Diff
+            {
+                '<leader>gd',
                 function()
-                    Snacks.picker.git_status()
+                    Snacks.picker.git_diff()
                 end,
                 desc = '[S]tatus',
-            })
-            table.insert(keys, {
+            },
+            -- File history
+            {
                 '<leader>gf',
                 function()
                     Snacks.picker.git_log_file()
                 end,
                 desc = '[F]ile history',
-            })
-        end
+            },
+            {
+                '<leader>gp',
+                function()
+                    Snacks.picker.gh_pr({ author = "@me" })
+                end,
+                desc = 'Browse my PRs'
+            },
+            {
+                '<leader>gy',
+                function()
+                    -- Check if current branch has been pushed to remote
+                    local branch = vim.fn.system('git rev-parse --abbrev-ref HEAD'):gsub('\n', '')
+                    local remote_check = vim.fn.system(
+                        'git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null')
+
+                    if vim.v.shell_error ~= 0 or remote_check == '' then
+                        branch = vim.fn.system('git get-main-branch')
+                    end
+
+                    Snacks.gitbrowse {
+                        what = 'file',
+                        line_start = vim.fn.line('.'),
+                        line_end = vim.fn.line('.'),
+                        branch = branch,
+                        open = function(url) vim.fn.setreg("+", url) end,
+                        notify = false
+                    }
+                end,
+                desc = '[Y]ank github link to line'
+            }
+        }
 
         return keys
     end,
