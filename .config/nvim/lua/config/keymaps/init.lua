@@ -1,5 +1,8 @@
 require 'config.keymaps.yank_filename'
 
+vim.keymap.set('n', '<leader>w', '<cmd>update<cr>', { desc = 'Save' })
+vim.keymap.set('n', '<leader>q', '<cmd>q<cr>', { desc = 'Quit' })
+
 -- Make it easy to exit terminal mode
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 

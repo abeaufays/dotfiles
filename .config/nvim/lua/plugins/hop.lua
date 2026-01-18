@@ -8,7 +8,7 @@ return {
             keys = 'sadfjklewcmpgh',
         }
 
-        vim.keymap.set('', '<leader>h', function()
+        vim.keymap.set('', '<leader>j', function()
             hop.hint_words {}
         end, { remap = true })
     end,
