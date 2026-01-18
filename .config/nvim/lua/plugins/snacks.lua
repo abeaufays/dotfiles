@@ -116,7 +116,7 @@ return {
                 function()
                     Snacks.picker.git_diff()
                 end,
-                desc = '[S]tatus',
+                desc = '[D]iff',
             },
             -- File history
             {
