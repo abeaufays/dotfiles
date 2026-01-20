@@ -3,7 +3,6 @@
 
 # Two-line prompt format
 format = """
-$cmd_duration\
 $directory\
 $python\
 $git_branch\
