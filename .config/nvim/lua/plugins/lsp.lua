@@ -32,13 +32,34 @@ return {
     },
     {
         'mason-org/mason-lspconfig.nvim',
-        dependencies = { 'neovim/nvim-lspconfig', 'saghen/blink.cmp' },
+        dependencies = { 'neovim/nvim-lspconfig', 'saghen/blink.cmp', 'b0o/schemastore.nvim' },
         opts = {
-            ensure_installed = { 'lua_ls' },
+            ensure_installed = { 'lua_ls', 'jsonls' },
             handlers = {
                 function(server_name)
                     local capabilities = require('blink.cmp').get_lsp_capabilities()
                     vim.lsp.enable(server_name, { capabilities = capabilities })
+                end,
+                jsonls = function()
+                    local capabilities = require('blink.cmp').get_lsp_capabilities()
+                    local lspconfig = require('lspconfig')
+                    lspconfig.jsonls.setup({
+                        capabilities = capabilities,
+                        filetypes = { "json", "jsonc" },
+                        settings = {
+                            json = {
+                                schemas = require('schemastore').json.schemas(),
+                                validate = { enable = true },
+                                -- Allow comments in JSON files
+                                allowComments = true,
+                                -- Allow trailing commas
+                                allowTrailingCommas = true,
+                            },
+                        },
+                        init_options = {
+                            provideFormatter = true,
+                        },
+                    })
                 end,
             },
         },
