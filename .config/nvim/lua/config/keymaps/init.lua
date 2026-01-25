@@ -1,7 +1,8 @@
 require 'config.keymaps.yank_filename'
 local python_imports = require 'customs.python_imports'
 
-vim.keymap.set('n', '<leader>ri', python_imports.transform_python_class_import_to_module)
+vim.keymap.set('n', 'grp', python_imports.transform_python_class_import_to_module,
+    { desc = 'Python [I]mports: class to modules' })
 vim.keymap.set('n', '<leader>w', '<cmd>update<cr>', { desc = 'Save' })
 vim.keymap.set('n', '<leader>q', '<cmd>q<cr>', { desc = 'Quit' })
 

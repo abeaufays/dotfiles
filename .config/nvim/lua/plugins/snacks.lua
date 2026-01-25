@@ -4,15 +4,15 @@ return {
     lazy = false,
     opts = {
         bigfile = { enabled = true },
-        input = { enabled = true },
-        terminal = { enabled = true },
-        notifier = { enabled = true },
-        quickfile = { enabled = true },
-        statuscolumn = { enabled = true },
-        words = { enabled = true },
-        picker = { enabled = true },
         gh = { enabled = true },
         gitbrowse = { enabled = true },
+        input = { enabled = true },
+        notifier = { enabled = true },
+        picker = { enabled = true },
+        quickfile = { enabled = true },
+        statuscolumn = { enabled = true },
+        terminal = { enabled = true },
+        words = { enabled = true },
     },
     keys = function()
         local Snacks = require 'snacks'
@@ -82,14 +82,14 @@ return {
             },
             -- Config
             {
-                '<leader>scb',
+                '<leader>fcb',
                 function()
                     Snacks.picker.pickers()
                 end,
                 desc = '[B]uiltin',
             },
             {
-                '<leader>scc',
+                '<leader>fcc',
                 function()
                     Snacks.picker.colorschemes()
                 end,

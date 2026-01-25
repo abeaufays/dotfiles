@@ -46,12 +46,13 @@ return {
             -- Document existing key chains
             spec = {
                 { '<leader>f',  group = '[F]ind' },
-                { '<leader>sc', group = '[C]onfig' },
+                { '<leader>fc', group = '[C]onfig' },
                 { '<leader>g',  group = '[G]it' },
                 { '<leader>gc', group = '[C]onfig' },
                 { '<leader>t',  group = '[T]oggle' },
                 { '<leader>y',  group = '[Y]ank' },
-                { 'gr',         group = 'LSP' },
+                { '<leader>h',  group = 'Bookmarks ([H]aunt)' },
+                { 'gr',         group = '[R]efactor' },
                 { 'gra',        group = 'Code [A]ction' },
                 { 'grn',        group = 'Re[N]ame' },
                 { 'grt',        group = '[T]ype definition' },
