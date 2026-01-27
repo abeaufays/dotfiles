@@ -8,8 +8,6 @@ HISTSIZE=1000
 setopt HIST_IGNORE_SPACE
 SAVEHIST=1000
 
-bindkey -e
-zstyle :compinstall filename '~/.zshrc'
 autoload -Uz compinit
 compinit
 
@@ -25,4 +23,4 @@ if [ -f ~/.config/zsh/local.zsh ]; then
     source ~/.config/zsh/local.zsh
 fi
 
-set -o vi
+bindkey -v 
