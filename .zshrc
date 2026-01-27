@@ -24,3 +24,14 @@ if [ -f ~/.config/zsh/local.zsh ]; then
 fi
 
 bindkey -v 
+
+# Switch cursor on normal / insert mode
+function zle-keymap-select {
+  case $KEYMAP in
+    vicmd)      echo -ne '\e[2 q' ;; # Steady Block
+    viins|main) echo -ne '\e[6 q' ;; # Steady Bar
+  esac
+}
+zle -N zle-keymap-select
+
+precmd() { echo -ne '\e[6 q' }
