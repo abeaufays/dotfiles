@@ -13,7 +13,6 @@ return {
         },
         config = function()
             local cmp = require "cmp"
-
             cmp.setup {
                 sources = {
                     { name = "nvim_lsp" },
@@ -31,7 +30,8 @@ return {
                         },
                         { "i", "c" }
                     ),
-                    ["<left>"] = cmp.mapping.abort()
+                    ["<left>"] = cmp.mapping.abort(),
+                    ["<C-Space>"] = cmp.mapping.complete { behavior = cmp.SelectBehavior.Insert }
                 },
 
                 -- Enable luasnip to handle snippet expansion for nvim-cmp
