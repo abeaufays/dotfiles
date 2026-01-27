@@ -97,7 +97,7 @@ return {
             },
             -- Help
             {
-                '<leader>fh',
+                '<leader>fH',
                 function()
                     Snacks.picker.help()
                 end,
