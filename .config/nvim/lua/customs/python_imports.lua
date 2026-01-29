@@ -56,7 +56,8 @@ M.transform_python_class_import_to_module = function()
         local adjusted_line = start_line > import_idx and start_line - 1 or start_line
         vim.cmd(string.format("silent! %ds/\\<%s\\>/%s.%s/g", adjusted_line, class_name, existing_alias, class_name))
         vim.api.nvim_win_set_cursor(0, { adjusted_line, 0 })
-        vim.cmd("normal! $")
+        local new_line_content = vim.api.nvim_get_current_line()
+        vim.api.nvim_win_set_cursor(0, { vim.api.nvim_win_get_cursor(0)[1], #new_line_content })
         vim.cmd("nohlsearch")
     else
         -- CASE B: NEW IMPORT NEEDED
@@ -76,7 +77,8 @@ M.transform_python_class_import_to_module = function()
                 vim.cmd(string.format("normal %sGA%s", import_idx, alias))
             end
             vim.api.nvim_win_set_cursor(0, { start_line, 0 })
-            vim.cmd("normal! $")
+            local new_line_content = vim.api.nvim_get_current_line()
+            vim.api.nvim_win_set_cursor(0, { vim.api.nvim_win_get_cursor(0)[1], #new_line_content })
             vim.cmd("nohlsearch")
         end)
     end
