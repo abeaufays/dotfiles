@@ -136,7 +136,7 @@ return {
                 desc = 'Browse my PRs'
             },
             {
-                '<leader>gy',
+                '<leader>yg',
                 function()
                     -- Check if current branch has been pushed to remote
                     local branch = vim.fn.system('git rev-parse --abbrev-ref HEAD'):gsub('\n', '')
@@ -172,7 +172,7 @@ return {
                     }
                 end,
                 mode = { 'n', 'v' },
-                desc = '[Y]ank github link to line'
+                desc = '[G]ithub link to line'
             }
         }
 
