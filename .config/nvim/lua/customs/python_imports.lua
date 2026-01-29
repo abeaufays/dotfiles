@@ -3,7 +3,8 @@ local M = {}
 M.transform_python_class_import_to_module = function()
     vim.cmd("normal! viw")
     local class_name = vim.fn.expand("<cWORD>")
-    vim.notify(class_name)
+    -- Exit visual mode immediately after getting the word
+    vim.cmd("normal! v")
     local bufnr = vim.api.nvim_get_current_buf()
     local start_line = vim.api.nvim_win_get_cursor(0)[1]
 
@@ -26,18 +27,28 @@ M.transform_python_class_import_to_module = function()
 
     if not package_name then return end
 
-    -- 2. Look for an existing "import mod as alias"
+    -- 2. Look for an existing "import mod as alias" or "import mod"
     local existing_alias = nil
     for _, line in ipairs(lines) do
+        -- First try to match "import mod as alias"
         local alias = line:match("from%s+" ..
             package_name:gsub("%.", "%%.") .. "%s+import%s+" .. module_name .. "%s+as%s+([%w_]+)")
+
         if alias then
             existing_alias = alias
             break
         end
+
+        -- Then try to match plain "import mod" (without as clause)
+        local plain_match = line:match("from%s+" ..
+            package_name:gsub("%.", "%%.") .. "%s+import%s+" .. module_name .. "%s*$")
+
+        if plain_match then
+            existing_alias = module_name
+            break
+        end
     end
 
-    -- 3. Execution
     if existing_alias then
         -- CASE A: ALREADY EXISTS
         vim.api.nvim_buf_set_lines(bufnr, import_idx - 1, import_idx, false, {})
@@ -46,6 +57,7 @@ M.transform_python_class_import_to_module = function()
         vim.cmd(string.format("silent! %ds/\\<%s\\>/%s.%s/g", adjusted_line, class_name, existing_alias, class_name))
         vim.api.nvim_win_set_cursor(0, { adjusted_line, 0 })
         vim.cmd("normal! $")
+        vim.cmd("nohlsearch")
     else
         -- CASE B: NEW IMPORT NEEDED
         local new_import = string.format("from %s import %s as ", package_name, module_name)
@@ -55,17 +67,17 @@ M.transform_python_class_import_to_module = function()
         vim.ui.input({}, function(alias)
             if alias == nil or alias == '' then
                 -- Replace occurrence on the original line
-                vim.notify(string.format("silent! %ds/%s/%s.%s/g", start_line, class_name, module_name, class_name))
                 vim.cmd(string.format("silent! %ds/%s/%s.%s/g", start_line, class_name, module_name, class_name))
                 -- Fix the import line itself (it accidentally got renamed to alias.MyClass)
                 vim.cmd(string.format("silent! %ds/ as //g", import_idx))
             else
                 -- Replace occurrence on the original line
-                vim.cmd(string.format("silent! %ds/\\<%s\\>/%s.%s/g", start_line, class_name, module_name, class_name))
-                -- vim.cmd(string.format("silent! %ds/%s\\.%s/%s/", import_idx, alias, class_name, class_name))
+                vim.cmd(string.format("silent! %ds/\\<%s\\>/%s.%s/g", start_line, class_name, alias, class_name))
+                vim.cmd(string.format("normal %sGA%s", import_idx, alias))
             end
             vim.api.nvim_win_set_cursor(0, { start_line, 0 })
             vim.cmd("normal! $")
+            vim.cmd("nohlsearch")
         end)
     end
 end
