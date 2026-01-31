@@ -6,6 +6,7 @@ return {
         build = ':TSUpdate',
         dependencies = {
             'nvim-treesitter/nvim-treesitter-context',
+            'nvim-treesitter/nvim-treesitter-textobjects',
         },
         config = function()
             ---@diagnostic disable-next-line: missing-fields
