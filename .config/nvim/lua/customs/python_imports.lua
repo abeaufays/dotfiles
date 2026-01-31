@@ -1,10 +1,11 @@
 local M = {}
 
 M.transform_python_class_import_to_module = function()
-    vim.cmd("normal! viw")
-    local class_name = vim.fn.expand("<cWORD>")
-    -- Exit visual mode immediately after getting the word
-    vim.cmd("normal! v")
+    -- Get inside the word
+    -- This is required for <cword> to work even we are not at the end of line
+    vim.cmd("normal! h")
+    local class_name = vim.fn.expand("<cword>")
+
     local bufnr = vim.api.nvim_get_current_buf()
     local start_line = vim.api.nvim_win_get_cursor(0)[1]
 
