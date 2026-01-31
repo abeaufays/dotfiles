@@ -14,6 +14,9 @@ return {
         config = function()
             local cmp = require "cmp"
             cmp.setup {
+                enabled = function()
+                    return vim.bo.filetype ~= "oil"
+                end,
                 sources = {
                     { name = "nvim_lsp" },
                     { name = "cody" },
