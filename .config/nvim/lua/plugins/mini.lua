@@ -18,18 +18,27 @@ return {
                 },
             }
             require('mini.surround').setup()
+            local gen_ai_spec = require('mini.extra').gen_ai_spec
+            local gen_spec = require('mini.ai').gen_spec
             require('mini.ai').setup({
                 custom_textobjects = {
-                    a = require('mini.ai').gen_spec.argument(),
-                    f = require('mini.ai').gen_spec.treesitter({
+
+                    B = gen_ai_spec.buffer(),
+                    D = gen_ai_spec.diagnostic(),
+                    I = gen_ai_spec.indent(),
+                    L = gen_ai_spec.line(),
+                    N = gen_ai_spec.number(),
+                    a = gen_spec.argument(),
+                    f = gen_spec.treesitter({
                         a = '@function.outer',
                         i = '@function.inner',
                     }),
-                    c = require('mini.ai').gen_spec.treesitter({
+                    k = gen_spec.function_call(),
+                    c = gen_spec.treesitter({
                         a = '@class.outer',
                         i = '@class.inner',
                     }),
-                    o = require('mini.ai').gen_spec.treesitter({
+                    o = gen_spec.treesitter({
                         a = { '@loop.outer', '@conditional.outer' },
                         i = { '@loop.inner', '@conditional.inner' },
                     }),
