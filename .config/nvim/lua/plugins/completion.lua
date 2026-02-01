@@ -51,12 +51,12 @@ return {
                 if vim.bo.filetype ~= "python" then return end
 
                 -- heuristic: completion inserted a class
-                if item.kind ~= cmp.lsp.CompletionItemKind.Class then return end
-
-                -- defer so LSP edits are applied first
-                vim.defer_fn(function()
-                    require("customs.python_imports").transform_python_class_import_to_module()
-                end, 50)
+                if item.kind == cmp.lsp.CompletionItemKind.Class or item.kind == cmp.lsp.CompletionItemKind.Function then
+                    -- defer so LSP edits are applied first
+                    vim.defer_fn(function()
+                        require("customs.python_imports").transform_python_class_import_to_module()
+                    end, 50)
+                end
             end)
         end,
     }
