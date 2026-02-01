@@ -26,7 +26,12 @@ M.transform_python_class_import_to_module = function()
         end
     end
 
-    if not package_name then return end
+
+    if not package_name then
+        local cursor_pos = vim.api.nvim_win_get_cursor(0)
+        vim.api.nvim_win_set_cursor(0, { cursor_pos[1], cursor_pos[2] + 1 })
+        return
+    end
 
     -- 2. Look for an existing "import mod as alias" or "import mod"
     local existing_alias = nil
