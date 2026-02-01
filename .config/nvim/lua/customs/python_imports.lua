@@ -42,7 +42,7 @@ M.transform_python_class_import_to_module = function()
 
         -- Then try to match plain "import mod" (without as clause)
         local plain_match = line:match("from%s+" ..
-            package_name:gsub("%.", "%%.") .. "%s+import%s+" .. module_name .. "%s*$")
+            package_name:gsub("%.", "%%.") .. "%s+import%s+.*" .. module_name)
 
         if plain_match then
             existing_alias = module_name
