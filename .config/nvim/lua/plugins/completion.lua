@@ -20,6 +20,7 @@ return {
                 sources = {
                     { name = "nvim_lsp" },
                     { name = "cody" },
+                    { name = "luasnip" },
                     { name = "path" },
                     { name = "buffer" },
                 },
@@ -40,7 +41,7 @@ return {
                 -- Enable luasnip to handle snippet expansion for nvim-cmp
                 snippet = {
                     expand = function(args)
-                        vim.snippet.expand(args.body)
+                        require("luasnip").lsp_expand(args.body)
                     end,
                 },
             }
