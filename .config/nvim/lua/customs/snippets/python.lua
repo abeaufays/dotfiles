@@ -21,10 +21,28 @@ return {
             local nodes = {}
             -- Split parameters by comma
             for param in string.gmatch(params, "([^,]+)") do
-                -- Trim whitespace and extract parameter name (before any = or :)
-                local param_name = param:match("^%s*([%w_]+)")
+                -- Trim whitespace
+                param = param:match("^%s*(.-)%s*$")
+                
+                -- Extract parameter name and type hint
+                -- Handle cases: "name", "name: type", "name: type = default", "name = default"
+                local param_name, type_hint = param:match("^([%w_]+)%s*:%s*([^=]+)")
+                
+                if not param_name then
+                    -- No type hint found, just extract the name (before =)
+                    param_name = param:match("^([%w_]+)")
+                end
+                
                 if param_name then
-                    table.insert(nodes, t({ "self." .. param_name .. " = " .. param_name, "    " }))
+                    local assignment
+                    if type_hint then
+                        -- Clean up type hint (remove trailing whitespace and default value)
+                        type_hint = type_hint:match("^%s*(.-)%s*$")
+                        assignment = "self." .. param_name .. ": " .. type_hint .. " = " .. param_name
+                    else
+                        assignment = "self." .. param_name .. " = " .. param_name
+                    end
+                    table.insert(nodes, t({ assignment, "    " }))
                 end
             end
             table.insert(nodes, i(1))
