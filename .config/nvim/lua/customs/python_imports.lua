@@ -3,11 +3,13 @@ local M = {}
 M.transform_python_class_import_to_module = function()
     -- Get inside the word
     -- This is required for <cword> to work even we are not at the end of line
+    local cursor_pos = vim.api.nvim_win_get_cursor(0)
     vim.cmd("normal! h")
     local class_name = vim.fn.expand("<cword>")
+    vim.api.nvim_win_set_cursor(0, { cursor_pos[1], cursor_pos[2] })
 
     local bufnr = vim.api.nvim_get_current_buf()
-    local start_line = vim.api.nvim_win_get_cursor(0)[1]
+    local start_line = cursor_pos[1]
 
     local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
     local import_idx, package_name, module_name = -1, nil, nil
@@ -28,8 +30,7 @@ M.transform_python_class_import_to_module = function()
 
 
     if not package_name then
-        local cursor_pos = vim.api.nvim_win_get_cursor(0)
-        vim.api.nvim_win_set_cursor(0, { cursor_pos[1], cursor_pos[2] + 1 })
+        -- Compensate the normal-mode `h` we used to be sure we capture the word
         return
     end
 
@@ -60,32 +61,39 @@ M.transform_python_class_import_to_module = function()
         vim.api.nvim_buf_set_lines(bufnr, import_idx - 1, import_idx, false, {})
         -- Adjust line number if import was deleted before our start line
         local adjusted_line = start_line > import_idx and start_line - 1 or start_line
+        -- Save cursor position before substitution
+        local saved_cursor = vim.api.nvim_win_get_cursor(0)
         vim.cmd(string.format("silent! %ds/\\<%s\\>/%s.%s/g", adjusted_line, class_name, existing_alias, class_name))
-        vim.api.nvim_win_set_cursor(0, { adjusted_line, 0 })
-        local new_line_content = vim.api.nvim_get_current_line()
-        vim.api.nvim_win_set_cursor(0, { vim.api.nvim_win_get_cursor(0)[1], #new_line_content })
         vim.cmd("nohlsearch")
+        -- Restore cursor position, adjusting for added prefix (alias + dot)
+        local prefix_length = #existing_alias + 1 -- +1 for the dot
+        vim.api.nvim_win_set_cursor(0, { saved_cursor[1], saved_cursor[2] + prefix_length })
     else
         -- CASE B: NEW IMPORT NEEDED
+        -- Save cursor position before moving to import line
+        local saved_cursor = vim.api.nvim_win_get_cursor(0)
         local new_import = string.format("from %s import %s as ", package_name, module_name)
         vim.api.nvim_buf_set_lines(bufnr, import_idx - 1, import_idx, false, { new_import })
 
         vim.api.nvim_win_set_cursor(0, { import_idx, #new_import })
         vim.ui.input({}, function(alias)
+            local prefix_to_add
             if alias == nil or alias == '' then
                 -- Replace occurrence on the original line
                 vim.cmd(string.format("silent! %ds/%s/%s.%s/g", start_line, class_name, module_name, class_name))
                 -- Fix the import line itself (it accidentally got renamed to alias.MyClass)
                 vim.cmd(string.format("silent! %ds/ as //g", import_idx))
+                prefix_to_add = module_name
             else
                 -- Replace occurrence on the original line
                 vim.cmd(string.format("silent! %ds/\\<%s\\>/%s.%s/g", start_line, class_name, alias, class_name))
                 vim.cmd(string.format("normal %sGA%s", import_idx, alias))
+                prefix_to_add = alias
             end
-            vim.api.nvim_win_set_cursor(0, { start_line, 0 })
-            local new_line_content = vim.api.nvim_get_current_line()
-            vim.api.nvim_win_set_cursor(0, { vim.api.nvim_win_get_cursor(0)[1], #new_line_content })
             vim.cmd("nohlsearch")
+            -- Restore cursor to original position, adjusting for added prefix (alias/module + dot) and insert mode (+1)
+            local prefix_length = #prefix_to_add + 1 -- +1 for the dot
+            vim.api.nvim_win_set_cursor(0, { saved_cursor[1], saved_cursor[2] + prefix_length + 1 })
         end)
     end
 end
