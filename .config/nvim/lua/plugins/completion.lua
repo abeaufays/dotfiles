@@ -13,6 +13,7 @@ return {
         },
         config = function()
             local cmp = require "cmp"
+            local types = require "cmp.types"
             cmp.setup {
                 enabled = function()
                     return vim.bo.filetype ~= "oil"
@@ -24,6 +25,39 @@ return {
                     { name = "path" },
                     { name = "buffer" },
                 },
+                sorting = {
+                    priority_weight = 2,
+                    comparators = {
+                        -- Snippets first
+                        function(entry1, entry2)
+                            local kind1 = entry1:get_kind()
+                            local kind2 = entry2:get_kind()
+
+                            if kind1 == types.lsp.CompletionItemKind.Snippet
+                                and kind2 ~= types.lsp.CompletionItemKind.Snippet then
+                                return true
+                            end
+
+                            if kind2 == types.lsp.CompletionItemKind.Snippet
+                                and kind1 ~= types.lsp.CompletionItemKind.Snippet then
+                                return false
+                            end
+
+                            return nil
+                        end,
+
+                        -- then fall back to the defaults
+                        cmp.config.compare.offset,
+                        cmp.config.compare.exact,
+                        cmp.config.compare.score,
+                        cmp.config.compare.recently_used,
+                        cmp.config.compare.kind,
+                        cmp.config.compare.sort_text,
+                        cmp.config.compare.length,
+                        cmp.config.compare.order,
+                    },
+                },
+
                 mapping = {
                     ["<down>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
                     ["<up>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
@@ -43,7 +77,7 @@ return {
                     expand = function(args)
                         require("luasnip").lsp_expand(args.body)
                     end,
-                },
+                }
             }
 
             cmp.event:on("confirm_done", function(evt)
