@@ -19,8 +19,8 @@ return {
                 end,
                 sources = {
                     { name = "nvim_lsp" },
-                    { name = "cody" },
                     { name = "luasnip" },
+                    { name = "cody" },
                     { name = "path" },
                     { name = "buffer" },
                 },
