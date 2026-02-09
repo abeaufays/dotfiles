@@ -7,8 +7,10 @@ vim.keymap.set('n', '<leader>n', function()
 end, { desc = '[N]ext partial word' })
 vim.keymap.set('n', 'grp', python_imports.transform_python_class_import_to_module,
     { desc = 'Python [I]mports: class to modules' })
+
 vim.keymap.set('n', '<leader>w', '<cmd>update<cr>', { desc = 'Save' })
 vim.keymap.set('n', '<leader>q', '<cmd>q<cr>', { desc = 'Quit' })
+vim.keymap.set('n', '<leader><Tab>', '<cmd>wq<cr>', { desc = 'Save & Quit' })
 
 -- Make it easy to exit terminal mode
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
