@@ -6,7 +6,43 @@ local f = ls.function_node
 local d = ls.dynamic_node
 local sn = ls.snippet_node
 
+local ts_utils_ok, ts_utils = pcall(require, "nvim-treesitter.ts_utils")
+
+local function in_class_scope()
+    if not ts_utils_ok then
+        return false
+    end
+
+    local node = ts_utils.get_node_at_cursor()
+    while node do
+        if node:type() == "class_definition" then
+            return true
+        end
+        node = node:parent()
+    end
+
+    return false
+end
+
 return {
+    s("def", {
+        t("def "),
+        i(1, "function_name"),
+        t("("),
+        d(2, function()
+            if in_class_scope() then
+                return sn(nil, {
+                    t("self"),
+                    i(1),
+                })
+            end
+
+            return sn(nil, { i(1) })
+        end, {}),
+        t("):"),
+        t({ "", "    " }),
+        i(0),
+    }),
     s("__init__", {
         t("def __init__(self"),
         i(1),
