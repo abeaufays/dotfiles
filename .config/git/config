@@ -42,6 +42,7 @@
     # Opens branch selector in fzf then output the selected one.
     # Can accept arguments that are passed to fzf
     select-branch = "!f() { git branch | fzf $1 --preview='branch=$(echo {} | sed \"s/^[*+ ]*//\" | xargs echo); git-log-for-fzf-preview $(git merge-base $branch $(git get-main-branch))..$branch 2>/dev/null || echo \"No commits\"' | sed 's/^[*+ ]*//' ; }; f"
+    select-commit = "!git log `git get-reference-commit`..@ --pretty=format:'%h %s' | fzf --preview='echo {} | sed \"s/ .*$//\" | xargs git show --color ' | cut -c -7 "
 
     st = status
     # Add Modified Files: Display modified files since last commit, select some to add to the staging area 
@@ -62,7 +63,7 @@
     wip = commit --message='TMP: [skip ci]' --allow-empty --no-verify
 
     # Fixup on with a GUI selector
-    fix = "!f() { git log `git get-reference-commit`..@ --pretty=format:'%h %s' | fzf --preview='echo {} | sed \"s/ .*$//\" | xargs git show --color ' | cut -c -7 | xargs -r git commit $1 --fixup ; }; f"
+    fix = "!f() { git select-commit | xargs -r git commit $1 --fixup ; }; f"
 
     # Apply Fixups
     afix = "!git rebase --autosquash `git get-reference-commit`"
