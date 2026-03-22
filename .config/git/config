@@ -40,6 +40,8 @@
     is-merged = "!f() { commit=${1:-HEAD}; main=$(git get-main-branch); if git merge-base --is-ancestor $commit $main 2>/dev/null; then echo 'Merged'; elif git log $main --format=%H | grep -q $(git rev-parse $commit 2>/dev/null); then echo 'Merged (rebased)'; else echo 'Not merged'; fi; }; f"
 
 
+    select-branch = "!git branch | fzf --preview='branch=$(echo {} | sed \"s/^[*+ ]*//\" | xargs echo); git-log-for-fzf-preview $(git merge-base $branch $(git get-main-branch))..$branch 2>/dev/null || echo \"No commits\"' | sed 's/^[*+ ]*//'"
+
     st = status
     # Add Modified Files: Display modified files since last commit, select some to add to the staging area 
     amf = "!git diff --name-only | fzf -m --preview='git diff --color {}' | xargs -r git add $1"
@@ -69,7 +71,7 @@
 
     sw = switch
     # Show branches in fzf and select one to switch on
-    swf = "!git branch | fzf --preview='branch=$(echo {} | sed \"s/^[*+ ]*//\" | xargs echo); git-log-for-fzf-preview $(git merge-base $branch $(git get-main-branch))..$branch 2>/dev/null || echo \"No commits\"' | sed 's/^[*+ ]*//' | xargs git switch"
+    swf = "!git switch $(git select-branch)"
 
 
     pf = push --force-with-lease
