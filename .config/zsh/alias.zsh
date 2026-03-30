@@ -6,6 +6,8 @@ alias cdg='cd $(git rev-parse --show-toplevel)'
 
 alias pr-open="gh pr view -w || gh pr create -w"
 
+alias select-project="ls ~/projects | fzf "
+alias to-project='cd ~/projects/$(select-project)'
 
 mkpydir() {
     mkdir -p "$1"
