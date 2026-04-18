@@ -5,12 +5,12 @@ return {
     lazy = false,
     config = function()
         require('oil').setup {
-            use_default_keymaps = false,
+            use_default_keymaps = false, -- To remove some default keybinds colliding with tmux-navigator
             keymaps = {
                 ['g?'] = { 'actions.show_help', mode = 'n' },
                 ['<CR>'] = 'actions.select',
-                ['<C-s>'] = { 'actions.select', opts = { vertical = true } },
-                ['<C-h>'] = { 'actions.select', opts = { horizontal = true } },
+                ['<C-s>'] = { 'actions.select', opts = { horizontal = true } },
+                ['<C-S>'] = { 'actions.select', opts = { vertical = true } },
                 ['<C-t>'] = { 'actions.select', opts = { tab = true } },
                 ['<C-p>'] = {
                     'actions.preview',
@@ -19,7 +19,7 @@ return {
                     },
                 },
                 ['<C-c>'] = { 'actions.close', mode = 'n' },
-                ['<C-l>'] = 'actions.refresh',
+                ['<C-R>'] = 'actions.refresh', -- Capital R avoid overriding redo
                 ['-'] = { 'actions.parent', mode = 'n' },
                 ['_'] = { 'actions.open_cwd', mode = 'n' },
                 ['`'] = { 'actions.cd', mode = 'n' },
