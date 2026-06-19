@@ -8,7 +8,16 @@ return {
         gitbrowse = { enabled = true },
         input = { enabled = true },
         notifier = { enabled = true },
-        picker = { enabled = true },
+        picker = {
+            enabled = true,
+            win = {
+                input = {
+                    keys = {
+                        ['<C-p>'] = { 'toggle_preview', mode = { 'i', 'n' } },
+                    },
+                },
+            },
+        },
         quickfile = { enabled = true },
         statuscolumn = { enabled = true },
         terminal = { enabled = true },
