@@ -4,6 +4,9 @@ vim.g.maplocalleader = ' '
 require 'config.options'
 require 'config.keymaps'
 
+require 'config.dim_pane'
+
+
 -- Show lines yanked
 vim.api.nvim_create_autocmd('TextYankPost', {
     desc = 'Highlight when yanking (copying) text',
