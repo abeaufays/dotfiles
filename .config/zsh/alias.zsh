@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh 
 
 alias ll="ls -al --color=auto"
-alias activate='source .venv/bin/activate'
+alias activate='source $(git rev-parse --show-toplevel)/.venv/bin/activate'
 alias cdg='cd $(git rev-parse --show-toplevel)'
 
 alias pr-open="gh pr view -w || gh pr create -w"
