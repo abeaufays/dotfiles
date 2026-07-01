@@ -23,6 +23,7 @@ return {
                     print 'No commit found for this line'
                 end
             end, { desc = '[B]lame: open PR introducing line' })
+            vim.keymap.set('n', '<leader>gd', gitsigns.diffthis, { desc = '[D]iff this file' })
         end,
     },
 }
