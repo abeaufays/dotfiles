@@ -43,6 +43,13 @@ return {
         lazy = false,
         priority = 1000,
         config = function()
+            require('tokyonight').setup {
+                on_highlights = function(hl, _)
+                    -- Between function blue (#82aaff) and type teal (#4fd6be)
+                    hl['@lsp.type.namespace.python'] = { fg = '#7dcfe8' }
+                    hl['pythonInclude'] = { fg = '#c099ff' } -- keyword purple, same as import keywords
+                end,
+            }
             vim.cmd [[colorscheme tokyonight-moon]]
         end,
     },
