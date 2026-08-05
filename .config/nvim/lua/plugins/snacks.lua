@@ -26,12 +26,27 @@ return {
     keys = function()
         local Snacks = require 'snacks'
 
+        local function toggle_test_filter(picker)
+            local p = picker.input.filter.pattern
+            if p:find('!test', 1, true) then
+                picker.input.filter.pattern = vim.trim(p:gsub('^!test%s*', ''))
+            else
+                picker.input.filter.pattern = '!test ' .. vim.trim(p)
+            end
+            picker.input:set(picker.input.filter.pattern)
+            picker:find { refresh = false }
+        end
+
         local keys = {
             -- File navigation (scoped to Oil directory when browsing)
             {
                 '<leader>ff',
                 function()
-                    Snacks.picker.files { cwd = require('oil').get_current_dir() }
+                    Snacks.picker.files {
+                        cwd = require('oil').get_current_dir(),
+                        actions = { toggle_test_filter = toggle_test_filter },
+                        win = { input = { keys = { ['<C-e>'] = { 'toggle_test_filter', mode = { 'i', 'n' } } } } },
+                    }
                 end,
                 desc = '[F]iles',
             },
@@ -47,7 +62,11 @@ return {
             {
                 '<leader>fg',
                 function()
-                    Snacks.picker.grep { cwd = require('oil').get_current_dir() }
+                    Snacks.picker.grep {
+                        cwd = require('oil').get_current_dir(),
+                        actions = { toggle_test_filter = toggle_test_filter },
+                        win = { input = { keys = { ['<C-e>'] = { 'toggle_test_filter', mode = { 'i', 'n' } } } } },
+                    }
                 end,
                 desc = '[G]rep',
             },
