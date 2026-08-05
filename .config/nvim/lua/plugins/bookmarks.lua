@@ -10,7 +10,7 @@ return {
         line_hl = nil,
         virt_text_pos = "eol",
         data_dir = nil,
-        per_branch_bookmarks = true,
+        per_branch_bookmarks = false,
         picker = "snacks", -- "auto", "snacks", "telescope", or "fzf"
         picker_keys = {    -- picker agnostic, we got you covered
             delete = { key = "d", mode = { "n" } },
