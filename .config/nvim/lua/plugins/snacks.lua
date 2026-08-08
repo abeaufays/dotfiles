@@ -37,6 +37,17 @@ return {
             picker:find { refresh = false }
         end
 
+        -- Widen a picker scoped to an Oil directory back to the workspace.
+        -- No-op when it is already searching the workspace.
+        local function unscope_cwd(picker)
+            local root = vim.fs.normalize(vim.fn.getcwd())
+            if picker:cwd() == root then
+                return
+            end
+            picker:set_cwd(root)
+            picker:find()
+        end
+
         local keys = {
             -- File navigation (scoped to Oil directory when browsing)
             {
@@ -44,8 +55,15 @@ return {
                 function()
                     Snacks.picker.files {
                         cwd = require('oil').get_current_dir(),
-                        actions = { toggle_test_filter = toggle_test_filter },
-                        win = { input = { keys = { ['<C-e>'] = { 'toggle_test_filter', mode = { 'i', 'n' } } } } },
+                        actions = { toggle_test_filter = toggle_test_filter, unscope_cwd = unscope_cwd },
+                        win = {
+                            input = {
+                                keys = {
+                                    ['<C-e>'] = { 'toggle_test_filter', mode = { 'i', 'n' } },
+                                    ['<C-o>'] = { 'unscope_cwd', mode = { 'i', 'n' } },
+                                },
+                            },
+                        },
                     }
                 end,
                 desc = '[F]iles',
@@ -64,8 +82,15 @@ return {
                 function()
                     Snacks.picker.grep {
                         cwd = require('oil').get_current_dir(),
-                        actions = { toggle_test_filter = toggle_test_filter },
-                        win = { input = { keys = { ['<C-e>'] = { 'toggle_test_filter', mode = { 'i', 'n' } } } } },
+                        actions = { toggle_test_filter = toggle_test_filter, unscope_cwd = unscope_cwd },
+                        win = {
+                            input = {
+                                keys = {
+                                    ['<C-e>'] = { 'toggle_test_filter', mode = { 'i', 'n' } },
+                                    ['<C-o>'] = { 'unscope_cwd', mode = { 'i', 'n' } },
+                                },
+                            },
+                        },
                     }
                 end,
                 desc = '[G]rep',
