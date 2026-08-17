@@ -17,10 +17,18 @@ return {
                     line_up = '<M-Up>',
                 },
             }
+            local jump2d = require 'mini.jump2d'
+            jump2d.setup {
+                spotter = jump2d.builtin_opts.word_start.spotter,
+                view = { n_steps_ahead = 2 },
+            }
+            vim.keymap.set('', '<leader>j', function()
+                MiniJump2d.start()
+            end, { remap = true })
             require('mini.surround').setup()
             local gen_ai_spec = require('mini.extra').gen_ai_spec
             local gen_spec = require('mini.ai').gen_spec
-            require('mini.ai').setup({
+            require('mini.ai').setup {
                 custom_textobjects = {
 
                     B = gen_ai_spec.buffer(),
@@ -29,25 +37,25 @@ return {
                     L = gen_ai_spec.line(),
                     N = gen_ai_spec.number(),
                     a = gen_spec.argument(),
-                    f = gen_spec.treesitter({
+                    f = gen_spec.treesitter {
                         a = '@function.outer',
                         i = '@function.inner',
-                    }),
+                    },
                     k = gen_spec.function_call(),
-                    c = gen_spec.treesitter({
+                    c = gen_spec.treesitter {
                         a = '@class.outer',
                         i = '@class.inner',
-                    }),
-                    o = gen_spec.treesitter({
+                    },
+                    o = gen_spec.treesitter {
                         a = { '@loop.outer', '@conditional.outer' },
                         i = { '@loop.inner', '@conditional.inner' },
-                    }),
+                    },
                 },
 
                 -- Module options
-                n_lines = 500,                   -- How far to look for the object
+                n_lines = 500, -- How far to look for the object
                 search_method = 'cover_or_next', -- Jumps to next if not inside one
-            })
+            }
         end,
     },
 }
