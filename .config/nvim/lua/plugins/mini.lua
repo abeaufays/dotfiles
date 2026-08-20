@@ -21,10 +21,10 @@ return {
             jump2d.setup {
                 spotter = jump2d.builtin_opts.word_start.spotter,
                 view = { n_steps_ahead = 2 },
+                mappings = {
+                    start_jumping = '<leader>j',
+                },
             }
-            vim.keymap.set('', '<leader>j', function()
-                MiniJump2d.start()
-            end, { remap = true })
             require('mini.surround').setup()
             local gen_ai_spec = require('mini.extra').gen_ai_spec
             local gen_spec = require('mini.ai').gen_spec
