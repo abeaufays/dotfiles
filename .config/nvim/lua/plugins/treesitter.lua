@@ -12,7 +12,7 @@ return {
         config = function()
             -- markdown_inline has no filetype of its own (it's injected inside markdown),
             -- so it would never be picked up by the FileType autocmd below.
-            require('nvim-treesitter').install {
+            local filetypes = {
                 'python',
                 'htmldjango',
                 'html',
@@ -23,13 +23,24 @@ return {
                 'bash',
                 'gitcommit',
                 'diff',
-                'markdown_inline',
                 'markdown',
                 'rust',
                 'javascript',
                 'lua',
                 'vimdoc',
             }
+
+            require('nvim-treesitter').install {
+                'markdown_inline',
+                unpack(filetypes),
+            }
+
+            vim.api.nvim_create_autocmd('FileType', {
+                pattern = filetypes,
+                callback = function(args)
+                    vim.treesitter.start(args.buf)
+                end,
+            })
 
             -- Sticky scroll (treesitter-context)
             require('treesitter-context').setup {
