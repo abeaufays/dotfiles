@@ -35,34 +35,41 @@ return {
         dependencies = { 'neovim/nvim-lspconfig', 'hrsh7th/cmp-nvim-lsp', 'b0o/schemastore.nvim' },
         opts = {
             ensure_installed = { 'lua_ls', 'jsonls' },
-            handlers = {
-                function(server_name)
-                    local capabilities = require('cmp_nvim_lsp').default_capabilities()
-                    vim.lsp.enable(server_name, { capabilities = capabilities })
-                end,
-                jsonls = function()
-                    local capabilities = require('cmp_nvim_lsp').default_capabilities()
-                    local lspconfig = require('lspconfig')
-                    lspconfig.jsonls.setup({
-                        capabilities = capabilities,
-                        filetypes = { "json", "jsonc" },
-                        settings = {
-                            json = {
-                                schemas = require('schemastore').json.schemas(),
-                                validate = { enable = true },
-                                -- Allow comments in JSON files
-                                allowComments = true,
-                                -- Allow trailing commas
-                                allowTrailingCommas = true,
-                            },
-                        },
-                        init_options = {
-                            provideFormatter = true,
-                        },
-                    })
-                end,
-            },
         },
+        config = function(_, opts)
+            local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+            vim.lsp.config('*', { capabilities = capabilities })
+
+            vim.lsp.config('ty', {
+                settings = {
+                    ty = {
+                        completions = {
+                            autoImport = false,
+                        },
+                    },
+                },
+            })
+
+            vim.lsp.config('jsonls', {
+                filetypes = { 'json', 'jsonc' },
+                settings = {
+                    json = {
+                        schemas = require('schemastore').json.schemas(),
+                        validate = { enable = true },
+                        -- Allow comments in JSON files
+                        allowComments = true,
+                        -- Allow trailing commas
+                        allowTrailingCommas = true,
+                    },
+                },
+                init_options = {
+                    provideFormatter = true,
+                },
+            })
+
+            require('mason-lspconfig').setup(opts)
+        end,
     },
     {
         -- for nvim configs
