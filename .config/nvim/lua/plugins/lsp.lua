@@ -10,8 +10,7 @@ return {
                     vim.keymap.set('n', 'gd', function()
                         Snacks.picker.lsp_definitions()
                     end, { buffer = event.buf, desc = 'Goto [D]efinition' })
-                    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration,
-                        { buffer = event.buf, desc = 'Goto [D]eclaration' })
+                    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { buffer = event.buf, desc = 'Goto [D]eclaration' })
                     vim.keymap.set('n', 'grr', function()
                         Snacks.picker.lsp_references()
                     end, { buffer = event.buf, desc = '[R]eference' })
@@ -40,16 +39,6 @@ return {
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
             vim.lsp.config('*', { capabilities = capabilities })
-
-            vim.lsp.config('ty', {
-                settings = {
-                    ty = {
-                        completions = {
-                            autoImport = false,
-                        },
-                    },
-                },
-            })
 
             vim.lsp.config('jsonls', {
                 filetypes = { 'json', 'jsonc' },
