@@ -5,7 +5,7 @@ require 'config.options'
 require 'config.keymaps'
 
 require 'config.dim_pane'
-
+require 'config.global_marks'
 
 -- Show lines yanked
 vim.api.nvim_create_autocmd('TextYankPost', {
