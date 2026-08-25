@@ -21,3 +21,5 @@ vim.diagnostic.config { float = { border = 'rounded' } }
 
 pcall(require, 'local.setup')
 require 'config.lazy'
+
+vim.cmd.colorscheme('tokyonight-moon')

@@ -50,7 +50,6 @@ return {
                     hl['pythonInclude'] = { fg = '#c099ff' } -- keyword purple, same as import keywords
                 end,
             }
-            vim.cmd [[colorscheme tokyonight-moon]]
         end,
     },
 }
