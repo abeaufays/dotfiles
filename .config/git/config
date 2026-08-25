@@ -113,6 +113,8 @@
     amne = commit --amend --no-edit
     wip = commit --message='TMP: [skip ci]' --allow-empty --no-verify
 
+    shf = "!git show $(git select-commit)"
+
     # Fixup on with a GUI selector
     fix = "!f() { git select-commit | xargs -r git commit $1 --fixup ; }; f"
 
