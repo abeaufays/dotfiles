@@ -14,8 +14,26 @@ vim.keymap.set('n', '`', function()
     mark_global '`'
 end, { desc = 'Jump to global mark' })
 vim.keymap.set('n', "'", function()
-    mark_global "'"
-end, { desc = 'Jump to global mark line' })
+    local char = vim.fn.getcharstr()
+    if char:match '%a' then
+        char = char:upper()
+    end
+
+    local mark = "'" .. char
+    local current_file = vim.api.nvim_buf_get_name(0)
+    for _, item in ipairs(vim.fn.getmarklist()) do
+        if item.mark == mark then
+            if item.file == current_file then
+                vim.notify('Already in file marked ' .. char, vim.log.levels.INFO)
+            else
+                vim.cmd.edit(vim.fn.fnameescape(item.file))
+            end
+            return
+        end
+    end
+
+    vim.notify('Mark ' .. char .. ' is not set', vim.log.levels.WARN)
+end, { desc = 'Edit file marked globally' })
 
 -- Save marks and history in a local .nvim.shada file per project
 vim.opt.shadafile = '.nvim.shada'
