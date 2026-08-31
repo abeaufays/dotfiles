@@ -1,10 +1,6 @@
 require 'config.keymaps.yank_filename'
 local python_imports = require 'customs.python_imports'
 
-vim.keymap.set('n', '<leader>n', function()
-    vim.fn.setreg('/', '[A-Z_\\-]')
-    vim.cmd('normal n')
-end, { desc = '[N]ext partial word' })
 vim.keymap.set('n', 'grp', python_imports.transform_python_class_import_to_module,
     { desc = 'Python [I]mports: class to modules' })
 
