@@ -2,6 +2,7 @@ return {
     {
         'nvim-lualine/lualine.nvim',
         dependencies = { 'nvim-tree/nvim-web-devicons' },
+
         config = function()
             local sections = {
                 lualine_a = { 'mode' },
@@ -18,11 +19,11 @@ return {
             oil_sections.lualine_c = {
                 function()
                     local ok, oil = pcall(require, 'oil')
-                    if ok then
-                        return vim.fn.fnamemodify(oil.get_current_dir(), ':~')
-                    else
+                    if not ok then
                         return ''
                     end
+
+                    return vim.fs.relpath(vim.fn.getcwd(), oil.get_current_dir()) or '.'
                 end,
             }
 
