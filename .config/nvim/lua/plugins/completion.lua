@@ -8,6 +8,7 @@ return {
             'hrsh7th/cmp-nvim-lsp',
             'hrsh7th/cmp-path',
             'hrsh7th/cmp-buffer',
+            'hrsh7th/cmp-cmdline',
             { 'L3MON4D3/LuaSnip', build = 'make install_jsregexp' },
             'saadparwaiz1/cmp_luasnip',
         },
@@ -16,7 +17,7 @@ return {
             local types = require 'cmp.types'
             cmp.setup {
                 enabled = function()
-                    return vim.bo.filetype ~= 'oil'
+                    return vim.fn.mode() == 'c' or vim.bo.filetype ~= 'oil'
                 end,
                 sources = {
                     { name = 'nvim_lsp' },
@@ -58,7 +59,7 @@ return {
                 mapping = {
                     ['<down>'] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
                     ['<up>'] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
-                    ['<cr>'] = cmp.mapping(
+                    ['<tab>'] = cmp.mapping(
                         cmp.mapping.confirm {
                             behavior = cmp.ConfirmBehavior.Insert,
                             select = true,
@@ -77,6 +78,32 @@ return {
                 },
             }
 
+            cmp.setup.cmdline(':', {
+                mapping = cmp.mapping.preset.cmdline {
+                    ['<Tab>'] = cmp.mapping(
+                        cmp.mapping.confirm {
+                            behavior = cmp.ConfirmBehavior.Insert,
+                            select = true,
+                        },
+                        { 'c' }
+                    ),
+                    ['<Up>'] = cmp.mapping(
+                        cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
+                        { 'c' }
+                    ),
+                    ['<Down>'] = cmp.mapping(
+                        cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
+                        { 'c' }
+                    ),
+                },
+                sources = cmp.config.sources({
+                    { name = 'path' },
+                }, {
+                    { name = 'cmdline' },
+                }),
+                matching = { disallow_symbol_nonprefix_matching = false },
+            })
+
             cmp.event:on('confirm_done', function(evt)
                 local item = evt.entry:get_completion_item()
                 -- only react to python auto-imports
@@ -84,7 +111,7 @@ return {
                     return
                 end
 
-                -- heuristic: completion inserted a class
+                -- heuristic: completion inserted a class or function
                 if item.kind == cmp.lsp.CompletionItemKind.Class or item.kind == cmp.lsp.CompletionItemKind.Function then
                     -- defer so LSP edits are applied first
                     vim.defer_fn(function()
