@@ -108,6 +108,8 @@
         | fzf -m --preview='git diff --color --merge-base $(git get-main-branch) {}' \
         | xargs -r $EDITOR"
 
+    df = diff
+    dfs = diff --staged
     co = commit
     ame = commit --amend
     amne = commit --amend --no-edit
