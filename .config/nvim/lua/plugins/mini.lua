@@ -46,6 +46,10 @@ return {
                         a = '@class.outer',
                         i = '@class.inner',
                     },
+                    h = gen_spec.treesitter {
+                        a = '@hunk.outer',
+                        i = '@hunk.inner',
+                    },
                     o = gen_spec.treesitter {
                         a = { '@loop.outer', '@conditional.outer' },
                         i = { '@loop.inner', '@conditional.inner' },
