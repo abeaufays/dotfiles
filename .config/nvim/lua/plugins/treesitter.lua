@@ -42,6 +42,8 @@ return {
                 end,
             })
 
+            require('config.diff_motions').setup()
+
             -- Sticky scroll (treesitter-context)
             require('treesitter-context').setup {
                 enable = true,
