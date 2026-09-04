@@ -40,9 +40,7 @@ return {
                 local commit = blame:match '^(%x+)'
                 if commit and commit ~= '0000000000000000000000000000000000000000' then
                     -- Find and open PR using gh
-                    vim.fn.system(string.format(
-                        'gh pr view --web $(gh pr list --search "%s" --state merged --json number --jq ".[0].number")',
-                        commit))
+                    vim.fn.system(string.format('gh pr view --web $(gh pr list --search "%s" --state merged --json number --jq ".[0].number")', commit))
                 else
                     print 'No commit found for this line'
                 end

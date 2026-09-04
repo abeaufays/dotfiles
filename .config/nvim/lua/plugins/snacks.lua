@@ -184,7 +184,7 @@ return {
             {
                 '<leader>gp',
                 function()
-                    Snacks.picker.gh_pr({ author = "@me" })
+                    Snacks.picker.gh_pr { author = '@me' }
                 end,
                 desc = 'Browse my PRs'
             },
@@ -193,22 +193,21 @@ return {
                 function()
                     -- Check if current branch has been pushed to remote
                     local branch = vim.fn.system('git rev-parse --abbrev-ref HEAD'):gsub('\n', '')
-                    local remote_check = vim.fn.system(
-                        'git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null')
+                    local remote_check = vim.fn.system 'git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null'
 
                     if vim.v.shell_error ~= 0 or remote_check == '' then
-                        branch = vim.fn.system('git get-main-branch')
+                        branch = vim.fn.system 'git get-main-branch'
                     end
 
                     -- Get line range (handles both normal and visual mode)
-                    local line_start = vim.fn.line('.')
-                    local line_end = vim.fn.line('.')
+                    local line_start = vim.fn.line '.'
+                    local line_end = vim.fn.line '.'
 
                     -- Check if we're coming from visual mode
                     local mode = vim.fn.mode()
                     if mode == 'v' or mode == 'V' or mode == '\22' then
-                        line_start = vim.fn.line('v')
-                        line_end = vim.fn.line('.')
+                        line_start = vim.fn.line 'v'
+                        line_end = vim.fn.line '.'
                         -- Ensure start is before end
                         if line_start > line_end then
                             line_start, line_end = line_end, line_start
@@ -220,13 +219,15 @@ return {
                         line_start = line_start,
                         line_end = line_end,
                         branch = branch,
-                        open = function(url) vim.fn.setreg("+", url) end,
-                        notify = false
+                        open = function(url)
+                            vim.fn.setreg('+', url)
+                        end,
+                        notify = false,
                     }
                 end,
                 mode = { 'n', 'v' },
-                desc = '[G]ithub link to line'
-            }
+                desc = '[G]ithub link to line',
+            },
         }
 
         return keys
