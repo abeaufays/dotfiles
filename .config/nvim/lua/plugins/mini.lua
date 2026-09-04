@@ -28,6 +28,20 @@ return {
             require('mini.surround').setup()
             local gen_ai_spec = require('mini.extra').gen_ai_spec
             local gen_spec = require('mini.ai').gen_spec
+
+            -- This is needed so the dah bind to delete a hunk doesn't leave an empty line
+            local hunk_spec = gen_spec.treesitter {
+                a = '@hunk.outer',
+                i = '@hunk.inner',
+            }
+            local function linewise_hunk_spec(ai_type, ...)
+                local regions = hunk_spec(ai_type, ...)
+                for _, region in ipairs(regions) do
+                    region.vis_mode = 'V'
+                end
+                return regions
+            end
+
             require('mini.ai').setup {
                 mappings = {
                     around_next = 'aN',
@@ -50,10 +64,7 @@ return {
                         a = '@class.outer',
                         i = '@class.inner',
                     },
-                    h = gen_spec.treesitter {
-                        a = '@hunk.outer',
-                        i = '@hunk.inner',
-                    },
+                    h = linewise_hunk_spec,
                     o = gen_spec.treesitter {
                         a = { '@loop.outer', '@conditional.outer' },
                         i = { '@loop.inner', '@conditional.inner' },
