@@ -30,10 +30,10 @@ vim.keymap.set('n', '<leader>yI',
             local mod = module_path:sub(last_dot + 1)
             import = ('from %s import %s'):format(base, mod)
         end
-        vim.fn.setreg('"', import)
+        vim.fn.setreg('"', import, 'l')
 
         -- Yank to system clipboard
-        vim.fn.setreg('+', import)
+        vim.fn.setreg('+', import, 'l')
 
         vim.notify('Copy-yanked ' .. import, vim.log.levels.INFO)
     end, { desc = 'python [I]mport' })
