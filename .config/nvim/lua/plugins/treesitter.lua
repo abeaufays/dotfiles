@@ -75,6 +75,22 @@ return {
             vim.keymap.set({ 'x', 'o' }, 'ih', function()
                 require('nvim-treesitter-textobjects.select').select_textobject('@hunk.inner', 'textobjects')
             end)
+
+            -- functions
+            vim.keymap.set({ 'n', 'x', 'o' }, '[f', function()
+                require('nvim-treesitter-textobjects.move').goto_previous_start('@function.outer', 'textobjects')
+            end)
+            vim.keymap.set({ 'n', 'x', 'o' }, ']f', function()
+                require('nvim-treesitter-textobjects.move').goto_next_start('@function.outer', 'textobjects')
+            end)
+
+            -- arguments
+            vim.keymap.set({ 'n', 'x', 'o' }, '[a', function()
+                require('nvim-treesitter-textobjects.move').goto_previous_start('@parameter.inner', 'textobjects')
+            end)
+            vim.keymap.set({ 'n', 'x', 'o' }, ']a', function()
+                require('nvim-treesitter-textobjects.move').goto_next_start('@parameter.inner', 'textobjects')
+            end)
         end,
     },
 }
