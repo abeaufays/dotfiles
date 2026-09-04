@@ -29,13 +29,17 @@ return {
             local gen_ai_spec = require('mini.extra').gen_ai_spec
             local gen_spec = require('mini.ai').gen_spec
             require('mini.ai').setup {
+                mappings = {
+                    around_next = 'aN',
+                    inside_next = 'iN',
+                    around_last = 'aL',
+                    inside_last = 'iL',
+                },
                 custom_textobjects = {
-
                     B = gen_ai_spec.buffer(),
                     D = gen_ai_spec.diagnostic(),
                     I = gen_ai_spec.indent(),
-                    L = gen_ai_spec.line(),
-                    N = gen_ai_spec.number(),
+                    l = gen_ai_spec.line(),
                     a = gen_spec.argument(),
                     f = gen_spec.treesitter {
                         a = '@function.outer',
@@ -56,7 +60,6 @@ return {
                     },
                 },
 
-                -- Module options
                 n_lines = 500, -- How far to look for the object
                 search_method = 'cover_or_next', -- Jumps to next if not inside one
             }
