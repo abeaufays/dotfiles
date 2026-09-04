@@ -42,6 +42,21 @@ return {
                 return regions
             end
 
+            -- Make a version of assignement linewise
+            local assignment_spec = gen_spec.treesitter {
+                a = '@assignment.outer',
+                i = '@assignment.inner',
+            }
+            local function assignment_textobject(ai_type, ...)
+                local regions = assignment_spec(ai_type, ...)
+                if ai_type == 'a' then
+                    for _, region in ipairs(regions) do
+                        region.vis_mode = 'V'
+                    end
+                end
+                return regions
+            end
+
             require('mini.ai').setup {
                 mappings = {
                     around_next = 'aN',
@@ -69,6 +84,7 @@ return {
                         a = { '@loop.outer', '@conditional.outer' },
                         i = { '@loop.inner', '@conditional.inner' },
                     },
+                    s = assignment_textobject,
                 },
 
                 n_lines = 500, -- How far to look for the object
