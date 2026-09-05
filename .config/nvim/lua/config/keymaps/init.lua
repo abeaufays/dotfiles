@@ -26,5 +26,9 @@ vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 vim.keymap.set('v', '<', '<gv', { desc = 'Indent left and reselect' })
 vim.keymap.set('v', '>', '>gv', { desc = 'Indent right and reselect' })
 
+-- Make normal-mode pastes adapt to the indentation of the current line
+vim.keymap.set('n', 'p', ']p', { desc = 'Put after with adjusted indent' })
+vim.keymap.set('n', 'P', '[p', { desc = 'Put before with adjusted indent' })
+
 -- Clear highlights on search when pressing <Esc> in normal mode
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
