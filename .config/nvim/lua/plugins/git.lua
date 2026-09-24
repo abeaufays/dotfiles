@@ -8,10 +8,6 @@ return {
 
             gitsigns.setup {
                 on_attach = function(bufnr)
-                    local function map(lhs, rhs, desc)
-                        vim.keymap.set('n', lhs, rhs, { buffer = bufnr, desc = desc })
-                    end
-
                     local repeatable_hunk_move = repeatable_move.make_repeatable_move(function(opts)
                         if vim.wo.diff then
                             vim.cmd.normal { opts.forward and ']c' or '[c', bang = true }
@@ -20,13 +16,13 @@ return {
                         end
                     end)
 
-                    map(']c', function()
+                    vim.keymap.set('n', ']c', function()
                         repeatable_hunk_move { forward = true }
-                    end, 'Next change')
+                    end, { buffer = bufnr, desc = 'Next change' })
 
-                    map('[c', function()
+                    vim.keymap.set('n', '[c', function()
                         repeatable_hunk_move { forward = false }
-                    end, 'Previous change')
+                    end, { buffer = bufnr, desc = 'Previous change' })
                 end,
             }
 
